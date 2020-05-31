@@ -16,6 +16,7 @@ public class GameView: MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject allyPrefab;
+    public GameObject enemyPrefab;
 
     private Timer attackTimer;
     
@@ -27,6 +28,7 @@ public class GameView: MonoBehaviour
 
         gameController.StartGame();
         SpawnAllies();
+        SpawnEnemies();
     }
 
     void Start()
@@ -75,11 +77,17 @@ public class GameView: MonoBehaviour
         int radius = (gameModel.allyCount < 20) ? 2 : 5;
         for (int i = 0; i < gameModel.allyCount; i++)
         {
-            ObjectPool.Spawn(allyPrefab, new Vector3(enemyPos.x + Utility.rCos(radius, i * segmentDegree), 
-                                                    enemyPos.y * allyPrefab.transform.localScale.y, 
+            ObjectPool.Spawn(allyPrefab, new Vector3(enemyPos.x + Utility.rCos(radius, i * segmentDegree),
+                                                    enemyPos.y * allyPrefab.transform.localScale.y,
                                                     enemyPos.z + Utility.rSin(radius, i * segmentDegree))
                             );
         }
+    }
+
+    public void SpawnEnemies()
+    {
+        //TODO: spawn multiple enemies!
+        ObjectPool.Spawn(enemyPrefab, enemyPos);
     }
 
     public void Log(string s)
