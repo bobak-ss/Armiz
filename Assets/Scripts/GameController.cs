@@ -14,6 +14,7 @@ public class GameController
     {
         // start game with idle state
         gameModel.state = GameModel.GameState.Idle;
+        gameModel.allyCount = GameData.AllyCount;
     }
 
     public void StartAttack()

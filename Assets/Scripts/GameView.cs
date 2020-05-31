@@ -9,9 +9,13 @@ public class GameView: MonoBehaviour
 
     [Header("Game Prameters")]
     public float attackTime;
+    public Vector3 enemyPos;
 
     [Header("Editor Prameters")]
     public GameObject uiPanel;
+
+    [Header("Prefabs")]
+    public GameObject allyPrefab;
 
     private Timer attackTimer;
     
@@ -20,7 +24,9 @@ public class GameView: MonoBehaviour
         gameModel = new GameModel();
         gameController = new GameController();
         gameController.Setup(gameModel);
+
         gameController.StartGame();
+        SpawnAllies();
     }
 
     void Start()
@@ -61,6 +67,19 @@ public class GameView: MonoBehaviour
     {
         uiPanel.SetActive(true);
         gameController.EndAttack();
+    }
+
+    public void SpawnAllies()
+    {
+        float segmentDegree = 360 / gameModel.allyCount;
+        int radius = (gameModel.allyCount < 20) ? 2 : 5;
+        for (int i = 0; i < gameModel.allyCount; i++)
+        {
+            ObjectPool.Spawn(allyPrefab, new Vector3(enemyPos.x + Utility.rCos(radius, i * segmentDegree), 
+                                                    enemyPos.y * allyPrefab.transform.localScale.y, 
+                                                    enemyPos.z + Utility.rSin(radius, i * segmentDegree))
+                            );
+        }
     }
 
     public void Log(string s)
