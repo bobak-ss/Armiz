@@ -1,14 +1,17 @@
 ﻿using System;
 using UnityEngine;
 
-[System.Serializable]
-public class GameModel
+namespace Armiz
 {
-    public GameState state;
-    public int allyCount;
-    public enum GameState
+    [System.Serializable]
+    public class GameModel
     {
-        Attack,
-        Idle
+        public GameState state;
+        public int allyCount;
+        public enum GameState
+        {
+            Attack,
+            Idle
+        }
     }
 }

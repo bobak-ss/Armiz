@@ -1,31 +1,34 @@
 ﻿using System;
 using System.Diagnostics;
 
-public class GameController
+namespace Armiz
 {
-    public GameModel gameModel;
-
-    public virtual void Setup(GameModel _gameModel)
+    public class GameController
     {
-        gameModel = _gameModel;
-    }
+        public GameModel gameModel;
 
-    public void StartGame()
-    {
-        // start game with idle state
-        gameModel.state = GameModel.GameState.Idle;
-        gameModel.allyCount = GameData.AllyCount;
-    }
+        public virtual void Setup(GameModel _gameModel)
+        {
+            gameModel = _gameModel;
+        }
 
-    public void StartAttack()
-    {
-        // attack
-        gameModel.state = GameModel.GameState.Attack;
-    }
+        public void StartGame()
+        {
+            // start game with idle state
+            gameModel.state = GameModel.GameState.Idle;
+            gameModel.allyCount = GameData.AllyCount;
+        }
 
-    public void EndAttack()
-    {
-        // end attack
-        gameModel.state = GameModel.GameState.Idle;
+        public void StartAttack()
+        {
+            // attack
+            gameModel.state = GameModel.GameState.Attack;
+        }
+
+        public void EndAttack()
+        {
+            // end attack
+            gameModel.state = GameModel.GameState.Idle;
+        }
     }
 }
