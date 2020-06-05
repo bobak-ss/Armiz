@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Arimz;
+using System;
 
 namespace Armiz
 {
@@ -20,12 +21,16 @@ namespace Armiz
 
         [Header("Prefabs")]
         public GameObject allyPrefab;
+
         public GameObject enemyPrefab;
         public GameObject bulletPrefab;
 
         [HideInInspector] public Timer attackTimer;
         [HideInInspector] public Timer shootTimer;
         [HideInInspector] public List<Vector3> alliesPosList;
+
+        public Fighter enemy;
+        public Fighter ally;
 
         void Awake()
         {
@@ -87,6 +92,12 @@ namespace Armiz
             if (gameState != GameState.Attack) return;
             gameState = GameState.Idle;
             SetState(new IdleState(this));
+        }
+
+        internal void EnemyDied()
+        {
+            Debug.Log("Enemy Died!");
+            enemy.ResetHealth();
         }
 
         public void SpawnAllies()

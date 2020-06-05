@@ -630,7 +630,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackTime: 5
-  shootTime: 2
+  shootTime: 1
   enemyPos: {x: 0, y: 1, z: 0}
   uiPanel: {fileID: 1052748580}
   allyPrefab: {fileID: 879184497863737008, guid: 042945a6d7030814b9617a08d1c2419f,
@@ -639,6 +639,9 @@ MonoBehaviour:
     type: 3}
   bulletPrefab: {fileID: 6352656697358523079, guid: f1778985adc418c4bab892ccd5def94e,
     type: 3}
+  alliesPosList: []
+  enemy: {fileID: 11400000, guid: 9fc72ac531c417e40a9b036ed8bef59f, type: 2}
+  ally: {fileID: 11400000, guid: 99395b72ef64103408ec72dbd101bca4, type: 2}
 --- !u!4 &922368551
 Transform:
   m_ObjectHideFlags: 0
