@@ -32,6 +32,7 @@ namespace Armiz
             {
                 gameController.EnemyDied();
             }
+            gameController.SetEnemyHealthBar();
             Debug.Log("Enemy Damaged! \nEnemy health:" + gameController.enemy.GetCurrentHealth());
             yield break;
         }

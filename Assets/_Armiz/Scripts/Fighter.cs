@@ -22,10 +22,15 @@ public class Fighter : ScriptableObject
 
     public int GetDamage() { return _damage; }
 
+    //TODO: parameter instead of method
     public int GetCurrentHealth() { return _currentHealth; }
+    //TODO: parameter instead of method
+    public float GetTotalHealth() { return _totalHealth; }
+
     public enum FighterType
     {
         Enemy,
         Ally
     }
+
 }

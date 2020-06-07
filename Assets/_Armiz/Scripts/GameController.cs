@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using Arimz;
 using System;
+using UnityEngine.UI;
 
 namespace Armiz
 {
@@ -18,6 +19,7 @@ namespace Armiz
 
         [Header("Editor Prameters")]
         public GameObject uiPanel;
+        public Image enemyHealthBar;
 
         [Header("Prefabs")]
         public GameObject allyPrefab;
@@ -100,6 +102,13 @@ namespace Armiz
             enemy.ResetHealth();
         }
 
+        public void SetEnemyHealthBar()
+        {
+            if (enemyHealthBar == null) return;
+            enemyHealthBar.fillAmount = (enemy.GetCurrentHealth() / enemy.GetTotalHealth());
+            Debug.Log("SET HEALTH ENEMY!");
+        }
+
         public void SpawnAllies()
         {
             // TODO: despawn prevoiusly generated Allies
@@ -119,9 +128,11 @@ namespace Armiz
         public void SpawnEnemies()
         {
             //TODO: spawn multiple Enemies!
-            // TODO: despawn prevoiusly generated Enemies
-            ObjectPool.Spawn(enemyPrefab, enemyPos);
+            //TODO: despawn prevoiusly generated Enemies
+            GameObject go = ObjectPool.Spawn(enemyPrefab, enemyPos);
+
+            enemyHealthBar = go.transform.GetChild(0).GetChild(1).GetComponent<Image>();
+            SetEnemyHealthBar();
         }
     }
-
 }
