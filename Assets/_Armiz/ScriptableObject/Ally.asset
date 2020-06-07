@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Ally
   m_EditorClassIdentifier: 
   _damage: 1
-  _currentHealth: 100
-  _totalHealth: 100
+  _currentHealth: 20
+  _totalHealth: 20
   _fighterType: 1
