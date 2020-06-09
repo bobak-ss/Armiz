@@ -21,10 +21,10 @@ namespace Armiz
         public override IEnumerator AlliesAttack()
         {
             Debug.Log("Allies Attack!");
-            gameController.shootTimer = new Timer(Time.time, gameController.shootTime);
-            for (int i = 0; i < gameController.alliesPosList.Count; i++)
+            gameController.shootTimer = new TimerTool(Time.time, gameController.shootTime);
+            for (int i = 0; i < gameController.alliesGOList.Count; i++)
             {
-                GameObject bulletGO = ObjectPool.Spawn(gameController.bulletPrefab, gameController.alliesPosList[i]);
+                GameObject bulletGO = ObjectPool.Spawn(gameController.bulletPrefab, gameController.alliesGOList[i].transform.position);
                 Tween thisTween = bulletGO.transform.DOMove(gameController.enemyPos, 0.7f);
                 thisTween.OnComplete(() => ObjectPool.Despawn(bulletGO));
             }

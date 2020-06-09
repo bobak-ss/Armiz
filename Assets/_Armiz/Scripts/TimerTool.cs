@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Timer
+public class TimerTool
 {
     public float timerStartedAt;
     public float timerMax;
 
-    public Timer(float _timerStartedAt, float _timerMax)
+    public TimerTool(float _timerStartedAt, float _timerMax)
     {
         timerStartedAt = _timerStartedAt;
         timerMax = _timerMax;

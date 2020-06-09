@@ -23,23 +23,25 @@ namespace Armiz
 
         [Header("Prefabs")]
         public GameObject allyPrefab;
-
         public GameObject enemyPrefab;
         public GameObject bulletPrefab;
 
-        [HideInInspector] public Timer attackTimer;
-        [HideInInspector] public Timer shootTimer;
-        [HideInInspector] public List<Vector3> alliesPosList;
-
+        [Header("Scriptable Objects")]
         public Fighter enemy;
         public Fighter ally;
+
+        [HideInInspector] public TimerTool attackTimer;
+        [HideInInspector] public TimerTool shootTimer;
+
+        [HideInInspector] public List<GameObject> alliesGOList = new List<GameObject>();
+        [HideInInspector] public List<GameObject> enemiesGOList = new List<GameObject>();
 
         void Awake()
         {
             GameData.AllyCount = 1;
             gameState = GameState.Idle;
             SetState(new IdleState(this));
-            SpawnAllies();
+            SpawnNewAllies();
             SpawnEnemies();
         }
 
@@ -64,7 +66,7 @@ namespace Armiz
                     {
                         if (shootTimer.isFinished(Time.time))
                         {
-                            shootTimer = new Timer(Time.time, shootTime);
+                            shootTimer = new TimerTool(Time.time, shootTime);
                             StartCoroutine(state.AlliesAttack());
                         }
 
@@ -83,12 +85,16 @@ namespace Armiz
         {
             if (gameState != GameState.Idle) return;
             gameState = GameState.Attack;
-            attackTimer = new Timer(Time.time, attackTime);
+            attackTimer = new TimerTool(Time.time, attackTime);
             SetState(new AttackState(this));
-            shootTimer = new Timer(Time.time, shootTime);
+            shootTimer = new TimerTool(Time.time, shootTime);
             StartCoroutine(state.AlliesAttack());
         }
-
+        public void OnAddAllyBtnClick()
+        {
+            GameData.AllyCount++;
+            SpawnNewAllies();
+        }
         public void OnAttackTimerFinished()
         {
             if (gameState != GameState.Attack) return;
@@ -109,29 +115,38 @@ namespace Armiz
             Debug.Log("SET HEALTH ENEMY!");
         }
 
-        public void SpawnAllies()
+        private void SpawnNewAllies()
         {
-            // TODO: despawn prevoiusly generated Allies
-            alliesPosList = new List<Vector3>();
+            for (int i = 0; i < alliesGOList.Count; i++)
+            {
+                ObjectPool.Despawn(alliesGOList[i]);
+            }
+            alliesGOList = new List<GameObject>();
+
             int allyCount = GameData.AllyCount;
             float segmentDegree = 360 / allyCount;
             int radius = (allyCount < 20) ? 2 : 5;
             for (int i = 0; i < allyCount; i++)
             {
-                alliesPosList.Add(new Vector3(enemyPos.x + Utility.rCos(radius, i * segmentDegree),
+                Vector3 newPos = new Vector3(enemyPos.x + Utility.rCos(radius, i * segmentDegree),
                                                 enemyPos.y * allyPrefab.transform.localScale.y,
-                                                enemyPos.z + Utility.rSin(radius, i * segmentDegree)));
-                ObjectPool.Spawn(allyPrefab, alliesPosList[i]);
+                                                enemyPos.z + Utility.rSin(radius, i * segmentDegree));
+                alliesGOList.Add(ObjectPool.Spawn(allyPrefab, newPos));
             }
         }
 
         public void SpawnEnemies()
         {
             //TODO: spawn multiple Enemies!
-            //TODO: despawn prevoiusly generated Enemies
-            GameObject go = ObjectPool.Spawn(enemyPrefab, enemyPos);
+            for (int i = 0; i < enemiesGOList.Count; i++)
+            {
+                ObjectPool.Despawn(enemiesGOList[i]);
+            }
+            enemiesGOList = new List<GameObject>();
 
+            GameObject go = ObjectPool.Spawn(enemyPrefab, enemyPos);
             enemyHealthBar = go.transform.GetChild(0).GetChild(1).GetComponent<Image>();
+            enemiesGOList.Add(go);
             SetEnemyHealthBar();
         }
     }
