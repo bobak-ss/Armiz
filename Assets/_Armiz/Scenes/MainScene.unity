@@ -643,6 +643,7 @@ MonoBehaviour:
   attackTime: 5
   shootTime: 1
   enemyPos: {x: 0, y: 1, z: 0}
+  enemyController: {fileID: 0}
   uiPanel: {fileID: 1052748580}
   enemyHealthBar: {fileID: 0}
   allyPrefab: {fileID: 879184497863737008, guid: 042945a6d7030814b9617a08d1c2419f,

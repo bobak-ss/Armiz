@@ -26,13 +26,15 @@ namespace Armiz
             {
                 GameObject bulletGO = ObjectPool.Spawn(gameController.bulletPrefab, gameController.alliesGOList[i].transform.position);
                 Tween thisTween = bulletGO.transform.DOMove(gameController.enemyPos, 0.7f);
-                thisTween.OnComplete(() => ObjectPool.Despawn(bulletGO));
+                thisTween.OnComplete(() => {
+                    ObjectPool.Despawn(bulletGO);
+                    gameController.EnemyHit();
+                });
             }
             if (gameController.enemy.Damage(GameData.AllyCount * gameController.ally.GetDamage()))
             {
                 gameController.EnemyDied();
             }
-            gameController.SetEnemyHealthBar();
             Debug.Log("Enemy Damaged! \nEnemy health:" + gameController.enemy.GetCurrentHealth());
             yield break;
         }

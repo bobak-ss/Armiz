@@ -17,7 +17,10 @@ namespace Armiz
         public float shootTime;
         public Vector3 enemyPos;
 
-        [Header("Editor Prameters")]
+        [Header("ScriptRefrences")]
+        [SerializeField] private EnemyController enemyController;
+
+        [Header("Editor Parameters")]
         public GameObject uiPanel;
         public Image enemyHealthBar;
 
@@ -102,19 +105,16 @@ namespace Armiz
             SetState(new IdleState(this));
         }
 
-        internal void EnemyDied()
+        public void EnemyDied()
         {
             Debug.Log("Enemy Died!");
-            enemy.ResetHealth();
+            SpawnEnemies();
         }
 
-        public void SetEnemyHealthBar()
+        public void EnemyHit()
         {
-            if (enemyHealthBar == null) return;
-            enemyHealthBar.fillAmount = (enemy.GetCurrentHealth() / enemy.GetTotalHealth());
-            Debug.Log("SET HEALTH ENEMY!");
+            enemyController.Hit();
         }
-
         private void SpawnNewAllies()
         {
             for (int i = 0; i < alliesGOList.Count; i++)
@@ -144,10 +144,12 @@ namespace Armiz
             }
             enemiesGOList = new List<GameObject>();
 
-            GameObject go = ObjectPool.Spawn(enemyPrefab, enemyPos);
-            enemyHealthBar = go.transform.GetChild(0).GetChild(1).GetComponent<Image>();
-            enemiesGOList.Add(go);
-            SetEnemyHealthBar();
+            GameObject enemyGO = ObjectPool.Spawn(enemyPrefab, enemyPos);
+            enemyHealthBar = enemyGO.transform.GetChild(0).GetChild(1).GetComponent<Image>();
+            enemyController = enemyGO.GetComponent<EnemyController>();
+            enemyController.Initialize(enemy, enemyHealthBar);
+            enemyController.SetEnemyHealthBar();
+            enemiesGOList.Add(enemyGO);
         }
     }
 }
