@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +18,7 @@ namespace Armiz
             //gameController = _gameController;
             enemy = _enemy;
             healthBar = _healthBar;
+            enemy.ResetHealth();
             SetEnemyHealthBar();
         }
 
@@ -39,6 +41,10 @@ namespace Armiz
         public void Hit()
         {
             SetEnemyHealthBar();
+            Color currentColor = gameObject.GetComponent<Renderer>().material.color;
+            gameObject.GetComponent<Renderer>().material.DOBlendableColor(Color.red, 0.1f).OnComplete(() => {
+                gameObject.GetComponent<Renderer>().material.DOBlendableColor(currentColor, 0.2f); 
+            });
         }
     }
 }
