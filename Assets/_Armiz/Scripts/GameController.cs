@@ -21,7 +21,10 @@ namespace Armiz
         [SerializeField] private EnemyController enemyController;
 
         [Header("Editor Parameters")]
-        public GameObject uiPanel;
+        //public GameObject uiPanel;
+        public Image changeStateBtn;
+        public Button addOneBtn;
+        public Button upgradeBtn;
         public Image enemyHealthBar;
 
         [Header("Prefabs")]
@@ -41,7 +44,6 @@ namespace Armiz
 
         void Awake()
         {
-            GameData.AllyCount = 1;
             gameState = GameState.Idle;
             SetState(new IdleState(this));
             SpawnNewAllies();
@@ -61,22 +63,32 @@ namespace Armiz
                     // upgrade allies!
                     break;
                 case GameState.Attack:
-                    if (attackTimer.isFinished(Time.time))
-                    {
-                        OnAttackTimerFinished();
-                    }
-                    else
-                    {
-                        if (shootTimer.isFinished(Time.time))
-                        {
-                            shootTimer = new TimerTool(Time.time, shootTime);
-                            StartCoroutine(state.AlliesAttack());
-                        }
+                    //if (attackTimer.isFinished(Time.time))
+                    //{
+                    //    OnAttackTimerFinished();
+                    //}
+                    //else
+                    //{
+                    //    if (shootTimer.isFinished(Time.time))
+                    //    {
+                    //        shootTimer = new TimerTool(Time.time, shootTime);
+                    //        StartCoroutine(state.AlliesAttack());
+                    //    }
 
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            StartCoroutine(state.AlliesAttack());
-                        }
+                    //    if (Input.GetMouseButtonDown(0))
+                    //    {
+                    //        StartCoroutine(state.AlliesAttack());
+                    //    }
+                    //}
+                    if (shootTimer.isFinished(Time.time))
+                    {
+                        shootTimer = new TimerTool(Time.time, shootTime);
+                        StartCoroutine(state.AlliesAttack());
+                    }
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        StartCoroutine(state.AlliesAttack());
                     }
                     break;
                 default:
@@ -84,14 +96,22 @@ namespace Armiz
             }
         }
 
-        public void OnAttackBtnClick()
+        public void OnStateChangeBtnClick()
         {
-            if (gameState != GameState.Idle) return;
-            gameState = GameState.Attack;
-            attackTimer = new TimerTool(Time.time, attackTime);
-            SetState(new AttackState(this));
-            shootTimer = new TimerTool(Time.time, shootTime);
-            StartCoroutine(state.AlliesAttack());
+            if (gameState == GameState.Idle)
+            {
+                gameState = GameState.Attack;
+                attackTimer = new TimerTool(Time.time, attackTime);
+                SetState(new AttackState(this));
+                shootTimer = new TimerTool(Time.time, shootTime);
+                StartCoroutine(state.AlliesAttack());
+            }
+            else if (gameState == GameState.Attack)
+            {
+                if (gameState != GameState.Attack) return;
+                gameState = GameState.Idle;
+                SetState(new IdleState(this));
+            }
         }
         public void OnAddAllyBtnClick()
         {
@@ -150,6 +170,24 @@ namespace Armiz
             enemyController.Initialize(enemy, enemyHealthBar);
             enemyController.SetEnemyHealthBar();
             enemiesGOList.Add(enemyGO);
+        }
+
+        public void ChangeUIState()
+        {
+            if (gameState == GameState.Idle)
+            {
+                changeStateBtn.color = Color.yellow;
+                changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "ATTACK!";
+                addOneBtn.interactable = true;
+                upgradeBtn.interactable = true;
+            }
+            else if (gameState == GameState.Attack)
+            {
+                changeStateBtn.color = Color.red;
+                changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "STOP!";
+                addOneBtn.interactable = false;
+                upgradeBtn.interactable = false;
+            }
         }
     }
 }

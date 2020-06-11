@@ -11,7 +11,7 @@ namespace Armiz
         public override IEnumerator Start()
         {
             Debug.Log("Idle State Started!");
-            gameController.uiPanel.SetActive(true);
+            gameController.ChangeUIState();
             yield break;
         }
     }

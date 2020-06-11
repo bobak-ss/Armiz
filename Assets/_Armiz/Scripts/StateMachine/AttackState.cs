@@ -12,8 +12,7 @@ namespace Armiz
         public override IEnumerator Start()
         {
             Debug.Log("Attack State Started!");
-
-            gameController.uiPanel.SetActive(false);
+            gameController.ChangeUIState();
 
             yield break;
         }
