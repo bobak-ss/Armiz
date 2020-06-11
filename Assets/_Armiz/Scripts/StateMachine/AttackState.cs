@@ -28,7 +28,7 @@ namespace Armiz
                 Tween thisTween = bulletGO.transform.DOMove(gameController.enemyPos, 0.7f);
                 thisTween.OnComplete(() => {
                     ObjectPool.Despawn(bulletGO);
-                    gameController.EnemyHit();
+                    //gameController.EnemyHit();
                 });
             }
             if (gameController.enemy.Damage(GameData.AllyCount * gameController.ally.GetDamage()))

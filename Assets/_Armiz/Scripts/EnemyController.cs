@@ -9,6 +9,8 @@ namespace Armiz
     public class EnemyController : MonoBehaviour
     {
 
+        public Color defaultEnemyColor;
+
         //private GameController gameController;
         private Fighter enemy;
         private Image healthBar;
@@ -41,10 +43,15 @@ namespace Armiz
         public void Hit()
         {
             SetEnemyHealthBar();
-            Color currentColor = gameObject.GetComponent<Renderer>().material.color;
             gameObject.GetComponent<Renderer>().material.DOBlendableColor(Color.red, 0.1f).OnComplete(() => {
-                gameObject.GetComponent<Renderer>().material.DOBlendableColor(currentColor, 0.2f); 
+                gameObject.GetComponent<Renderer>().material.DOBlendableColor(defaultEnemyColor, 0.2f);
             });
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            Debug.Log("HITTT!");
+            if (other.gameObject.tag == "Bullet") Hit();
         }
     }
 }
