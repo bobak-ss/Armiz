@@ -46,6 +46,8 @@ namespace Armiz
             gameObject.GetComponent<Renderer>().material.DOBlendableColor(Color.red, 0.1f).OnComplete(() => {
                 gameObject.GetComponent<Renderer>().material.DOBlendableColor(defaultEnemyColor, 0.2f);
             });
+            transform.DOScale(0.6f, 0.1f);
+            transform.DOScale(new Vector3(1, 1, 1), 0.2f);
         }
 
         private void OnTriggerEnter(Collider other)
