@@ -973,7 +973,7 @@ GameObject:
   - component: {fileID: 1152193691}
   - component: {fileID: 1152193690}
   m_Layer: 5
-  m_Name: attackBtn
+  m_Name: changeStateBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1066,7 +1066,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.82984006, g: 0.943, b: 0.014144987, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
