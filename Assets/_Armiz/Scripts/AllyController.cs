@@ -36,6 +36,14 @@ public class AllyController : MonoBehaviour
             //gameController.EnemyHit();
         });
 
+        Vector3 enemyAllyVector = (transform.position - gameController.enemyPos).normalized;
+        enemyAllyVector = new Vector3(enemyAllyVector.x, 0, enemyAllyVector.z);
+        enemyAllyVector *= 0.25f;
+        Vector3 allyOrgPosition = transform.position;
+        transform.DOMove(allyOrgPosition + enemyAllyVector, 0.1f).OnComplete(() => {
+            transform.DOMove(allyOrgPosition, 0.15f);
+        });
+
         return ally.GetDamage();
     }
 }
