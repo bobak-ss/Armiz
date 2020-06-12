@@ -282,7 +282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b5d6ecf94027bd47a4cb9f87d863e43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultEnemyColor: {r: 0.78723794, g: 0.8584906, b: 0.01214843, a: 1}
+  enemyOrgColor: {r: 0.78723794, g: 0.8584906, b: 0.01214843, a: 1}
+  enemyDamageolor: {r: 0.46226418, g: 0.43445608, b: 0, a: 1}
 --- !u!54 &3160318698659006112
 Rigidbody:
   m_ObjectHideFlags: 0

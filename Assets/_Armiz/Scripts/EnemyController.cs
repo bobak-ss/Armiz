@@ -9,11 +9,16 @@ namespace Armiz
     public class EnemyController : MonoBehaviour
     {
 
-        public Color defaultEnemyColor;
+        public Color enemyOrgColor;
+        public Color enemyDamageolor;
 
         //private GameController gameController;
         private Fighter enemy;
         private Image healthBar;
+
+        private bool colorAnimating = false;
+
+        private Renderer renderer;
 
         public void Initialize(Fighter _enemy, Image _healthBar)
         {
@@ -26,12 +31,15 @@ namespace Armiz
 
         void Start()
         {
-
+            renderer = gameObject.GetComponent<Renderer>();
         }
 
         void Update()
         {
-
+            if (!colorAnimating)
+            {
+                renderer.material.color = enemyOrgColor;
+            }
         }
 
         public void SetEnemyHealthBar()
@@ -43,8 +51,9 @@ namespace Armiz
         public void Hit()
         {
             SetEnemyHealthBar();
-            gameObject.GetComponent<Renderer>().material.DOBlendableColor(Color.red, 0.1f).OnComplete(() => {
-                gameObject.GetComponent<Renderer>().material.DOBlendableColor(defaultEnemyColor, 0.2f);
+            colorAnimating = true;
+            renderer.material.DOBlendableColor(enemyDamageolor, 0.1f).OnComplete(() => {
+                colorAnimating = false;
             });
             transform.DOScale(0.6f, 0.1f);
             transform.DOScale(new Vector3(1, 1, 1), 0.2f);
