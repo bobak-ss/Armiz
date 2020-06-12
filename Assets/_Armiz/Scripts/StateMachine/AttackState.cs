@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Armiz
 {
@@ -12,7 +13,11 @@ namespace Armiz
         public override IEnumerator Start()
         {
             Debug.Log("Attack State Started!");
-            gameController.ChangeUIState();
+            //gameController.ChangeUIState();
+            gameController.changeStateBtn.color = Color.red;
+            gameController.changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "STOP!";
+            gameController.addOneBtn.interactable = false;
+            gameController.upgradeBtn.interactable = false;
 
             yield break;
         }

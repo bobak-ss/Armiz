@@ -169,22 +169,22 @@ namespace Armiz
             enemyControllers[enemyControllers.Count - 1].SetEnemyHealthBar();
         }
 
-        public void ChangeUIState()
-        {
-            if (gameState == GameState.Idle)
-            {
-                changeStateBtn.color = Color.yellow;
-                changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "ATTACK!";
-                addOneBtn.interactable = true;
-                upgradeBtn.interactable = true;
-            }
-            else if (gameState == GameState.Attack)
-            {
-                changeStateBtn.color = Color.red;
-                changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "STOP!";
-                addOneBtn.interactable = false;
-                upgradeBtn.interactable = false;
-            }
-        }
+        //public void ChangeUIState()
+        //{
+        //    if (gameState == GameState.Idle)
+        //    {
+        //        changeStateBtn.color = Color.yellow;
+        //        changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "ATTACK!";
+        //        addOneBtn.interactable = true;
+        //        upgradeBtn.interactable = true;
+        //    }
+        //    else if (gameState == GameState.Attack)
+        //    {
+        //        changeStateBtn.color = Color.red;
+        //        changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "STOP!";
+        //        addOneBtn.interactable = false;
+        //        upgradeBtn.interactable = false;
+        //    }
+        //}
     }
 }
