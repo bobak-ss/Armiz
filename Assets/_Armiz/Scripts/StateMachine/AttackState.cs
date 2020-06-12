@@ -28,13 +28,10 @@ namespace Armiz
             gameController.shootTimer = new TimerTool(Time.time, gameController.shootTime);
             for (int i = 0; i < gameController.allyControllers.Count; i++)
             {
-                GameObject bulletGO = ObjectPool.Spawn(gameController.bulletPrefab, gameController.allyControllers[i].transform.position);
-                Tween thisTween = bulletGO.transform.DOMove(gameController.enemyPos, 0.7f);
-                thisTween.OnComplete(() => {
-                    ObjectPool.Despawn(bulletGO);
-                    //gameController.EnemyHit();
-                });
+                gameController.allyControllers[i].FireProjectile();
             }
+
+            // TODO: enemies get damage when actually hit by a projectile
             if (gameController.enemy.Damage(GameData.AllyCount * gameController.ally.GetDamage()))
             {
                 gameController.EnemyDied();

@@ -150,6 +150,7 @@ namespace Armiz
                                                 enemyPos.y * allyPrefab.transform.localScale.y,
                                                 enemyPos.z + Utility.rSin(radius, i * segmentDegree));
                 allyControllers.Add(ObjectPool.Spawn(allyPrefab, newPos).GetComponent<AllyController>());
+                allyControllers[i].Initialize(this, ally, bulletPrefab);
             }
         }
 
