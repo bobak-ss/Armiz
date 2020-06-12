@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 879184497863737021}
   - component: {fileID: 879184497863737022}
   - component: {fileID: 879184497863737023}
+  - component: {fileID: 1138854250365395939}
   m_Layer: 0
-  m_Name: Ally
+  m_Name: AllyPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,3 +95,15 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1138854250365395939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879184497863737008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a018ada01cb93c4daa403f8e8f0784a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

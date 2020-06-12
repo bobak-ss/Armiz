@@ -18,7 +18,8 @@ namespace Armiz
         public Vector3 enemyPos;
 
         [Header("ScriptRefrences")]
-        [SerializeField] private EnemyController enemyController;
+        [SerializeField] public List<EnemyController> enemyControllers;
+        [SerializeField] public List<AllyController> allyControllers;
 
         [Header("Editor Parameters")]
         //public GameObject uiPanel;
@@ -38,9 +39,6 @@ namespace Armiz
 
         [HideInInspector] public TimerTool attackTimer;
         [HideInInspector] public TimerTool shootTimer;
-
-        [HideInInspector] public List<GameObject> alliesGOList = new List<GameObject>();
-        [HideInInspector] public List<GameObject> enemiesGOList = new List<GameObject>();
 
         void Awake()
         {
@@ -133,15 +131,15 @@ namespace Armiz
 
         public void EnemyHit()
         {
-            enemyController.Hit();
+            enemyControllers[enemyControllers.Count - 1].Hit();
         }
         private void SpawnNewAllies()
         {
-            for (int i = 0; i < alliesGOList.Count; i++)
+            for (int i = 0; i < allyControllers.Count; i++)
             {
-                ObjectPool.Despawn(alliesGOList[i]);
+                ObjectPool.Despawn(allyControllers[i].gameObject);
             }
-            alliesGOList = new List<GameObject>();
+            allyControllers = new List<AllyController>();
 
             int allyCount = GameData.AllyCount;
             float segmentDegree = 360 / allyCount;
@@ -151,25 +149,24 @@ namespace Armiz
                 Vector3 newPos = new Vector3(enemyPos.x + Utility.rCos(radius, i * segmentDegree),
                                                 enemyPos.y * allyPrefab.transform.localScale.y,
                                                 enemyPos.z + Utility.rSin(radius, i * segmentDegree));
-                alliesGOList.Add(ObjectPool.Spawn(allyPrefab, newPos));
+                allyControllers.Add(ObjectPool.Spawn(allyPrefab, newPos).GetComponent<AllyController>());
             }
         }
 
         public void SpawnEnemies()
         {
             //TODO: spawn multiple Enemies!
-            for (int i = 0; i < enemiesGOList.Count; i++)
+            for (int i = 0; i < enemyControllers.Count; i++)
             {
-                ObjectPool.Despawn(enemiesGOList[i]);
+                ObjectPool.Despawn(enemyControllers[i].gameObject);
             }
-            enemiesGOList = new List<GameObject>();
+            enemyControllers = new List<EnemyController>();
 
             GameObject enemyGO = ObjectPool.Spawn(enemyPrefab, enemyPos);
             enemyHealthBar = enemyGO.transform.GetChild(0).GetChild(1).GetComponent<Image>();
-            enemyController = enemyGO.GetComponent<EnemyController>();
-            enemyController.Initialize(enemy, enemyHealthBar);
-            enemyController.SetEnemyHealthBar();
-            enemiesGOList.Add(enemyGO);
+            enemyControllers.Add(enemyGO.GetComponent<EnemyController>());
+            enemyControllers[enemyControllers.Count - 1].Initialize(enemy, enemyHealthBar);
+            enemyControllers[enemyControllers.Count - 1].SetEnemyHealthBar();
         }
 
         public void ChangeUIState()
