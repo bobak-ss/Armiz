@@ -9,6 +9,7 @@ public class AllyController : MonoBehaviour
     private GameController gameController;
     private GameObject projectilePrefab;
     private Fighter ally;
+    private Vector3 allyOrgPosition;
 
     public void Initialize(GameController _gameController, Fighter _ally, GameObject _projectile)
     {
@@ -19,7 +20,7 @@ public class AllyController : MonoBehaviour
 
     void Start()
     {
-        
+        allyOrgPosition = transform.position;
     }
 
     void Update()
@@ -29,17 +30,19 @@ public class AllyController : MonoBehaviour
 
     public float FireProjectile()
     {
-        GameObject bulletGO = ObjectPool.Spawn(projectilePrefab, transform.position);
-        Tween thisTween = bulletGO.transform.DOMove(gameController.enemyPos, 0.7f);
+        GameObject projectileGO = ObjectPool.Spawn(projectilePrefab, transform.position);
+
+        // projectile animation
+        Tween thisTween = projectileGO.transform.DOMove(gameController.enemyPos, 0.7f);
         thisTween.OnComplete(() => {
-            ObjectPool.Despawn(bulletGO);
+            ObjectPool.Despawn(projectileGO);
             //gameController.EnemyHit();
         });
 
+        // attack animation
         Vector3 enemyAllyVector = (transform.position - gameController.enemyPos).normalized;
         enemyAllyVector = new Vector3(enemyAllyVector.x, 0, enemyAllyVector.z);
         enemyAllyVector *= 0.25f;
-        Vector3 allyOrgPosition = transform.position;
         transform.DOMove(allyOrgPosition + enemyAllyVector, 0.1f).OnComplete(() => {
             transform.DOMove(allyOrgPosition, 0.15f);
         });

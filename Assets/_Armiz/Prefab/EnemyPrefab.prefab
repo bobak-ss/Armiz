@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyOrgColor: {r: 0.78723794, g: 0.8584906, b: 0.01214843, a: 1}
-  enemyDamageolor: {r: 0.46226418, g: 0.43445608, b: 0, a: 1}
+  enemyDamageolor: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
 --- !u!54 &3160318698659006112
 Rigidbody:
   m_ObjectHideFlags: 0
