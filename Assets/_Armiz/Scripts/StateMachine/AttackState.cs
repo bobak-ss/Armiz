@@ -13,17 +13,22 @@ namespace Armiz
         public override IEnumerator Start()
         {
             Debug.Log("Attack State Started!");
-            //gameController.ChangeUIState();
+            
+            // UI changes
             gameController.changeStateBtn.color = Color.red;
             gameController.changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "STOP!";
             gameController.addOneBtn.interactable = false;
             gameController.upgradeBtn.interactable = false;
+            gameController.coinCountTxt.text = GameData.Coin.ToString();
 
             yield break;
         }
 
         public override IEnumerator AlliesAttack()
         {
+            // UI changes
+            gameController.coinCountTxt.text = GameData.Coin.ToString();
+
             Debug.Log("Allies Attack!");
             gameController.shootTimer = new TimerTool(Time.time, gameController.shootTime);
             for (int i = 0; i < gameController.allyControllers.Count; i++)
@@ -36,7 +41,7 @@ namespace Armiz
             {
                 gameController.EnemyDied();
             }
-            Debug.Log("Enemy Damaged! \nEnemy health:" + gameController.enemy.GetCurrentHealth());
+            //Debug.Log("Enemy Damaged! \nEnemy health:" + gameController.enemy.GetCurrentHealth());
             yield break;
         }
 

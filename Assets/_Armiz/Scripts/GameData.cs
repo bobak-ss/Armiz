@@ -13,9 +13,21 @@ public class GameData
             PlayerPrefs.SetInt("AC", value);
         }
     }
+    public static int Coin
+    {
+        get
+        {
+            return PlayerPrefs.GetInt("coin", DefaultValues.CointCountInitial);
+        }
+        set
+        {
+            PlayerPrefs.SetInt("coin", value);
+        }
+    }
 
     private class DefaultValues
     {
         public const int AllyCountInitial = 1;
+        public const int CointCountInitial = 0;
     }
 }

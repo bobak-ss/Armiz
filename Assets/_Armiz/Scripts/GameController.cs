@@ -28,6 +28,7 @@ namespace Armiz
         public Button addOneBtn;
         public Button upgradeBtn;
         public Image enemyHealthBar;
+        public Text coinCountTxt;
 
         [Header("Prefabs")]
         public GameObject allyPrefab;
@@ -114,6 +115,9 @@ namespace Armiz
         }
         public void OnAddAllyBtnClick()
         {
+            if (GameData.Coin < ally.GetCost()) return;
+
+            GameData.Coin -= ally.GetCost();
             GameData.AllyCount++;
             SpawnNewAllies();
         }
@@ -132,6 +136,8 @@ namespace Armiz
         public void EnemyDied()
         {
             Debug.Log("Enemy Died!");
+            GameData.Coin += enemy.GetBountyValue();
+            // enemy coin get animation
             SpawnEnemies();
         }
 

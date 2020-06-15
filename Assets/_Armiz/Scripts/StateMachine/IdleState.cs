@@ -12,11 +12,13 @@ namespace Armiz
         public override IEnumerator Start()
         {
             Debug.Log("Idle State Started!");
-            //gameController.ChangeUIState();
+
+            //UI Changes
             gameController.changeStateBtn.color = Color.yellow;
             gameController.changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "ATTACK!";
-            gameController.addOneBtn.interactable = true;
+            gameController.addOneBtn.interactable = (GameData.Coin > gameController.ally.GetCost());
             gameController.upgradeBtn.interactable = true;
+            gameController.coinCountTxt.text = GameData.Coin.ToString();
             yield break;
         }
     }
