@@ -5,6 +5,7 @@ using DG.Tweening;
 using Arimz;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Armiz
 {
@@ -116,13 +117,18 @@ namespace Armiz
             GameData.AllyCount++;
             SpawnNewAllies();
         }
+        public void OnResetProgressBtnClick()
+        {
+            GameData.AllyCount = 1;
+            SceneManager.LoadScene(0);
+        }
+
         public void OnAttackTimerFinished()
         {
             if (gameState != GameState.Attack) return;
             gameState = GameState.Idle;
             SetState(new IdleState(this));
         }
-
         public void EnemyDied()
         {
             Debug.Log("Enemy Died!");
