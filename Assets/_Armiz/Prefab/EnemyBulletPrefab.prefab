@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 313949323384516686}
   - component: {fileID: 3577603838896084900}
   m_Layer: 0
-  m_Name: BulletPrefab
-  m_TagString: Bullet
+  m_Name: EnemyBulletPrefab
+  m_TagString: enemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ba4b54e24a412154086d188557f02190, type: 2}
+  - {fileID: 2100000, guid: 4c2717f726069f34db6988c59cf39744, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

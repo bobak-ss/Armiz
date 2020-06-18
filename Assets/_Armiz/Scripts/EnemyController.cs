@@ -8,7 +8,6 @@ namespace Armiz
 {
     public class EnemyController : MonoBehaviour
     {
-
         public Color enemyOrgColor;
         public Color enemyDamageolor;
 
@@ -19,12 +18,15 @@ namespace Armiz
         private bool colorAnimating = false;
 
         private Renderer renderer;
+        private GameObject projectilePrefab;
 
-        public void Initialize(Fighter _enemy, Image _healthBar)
+        public void Initialize(Fighter _enemy, Image _healthBar, GameObject _projectilePrefab)
         {
             //gameController = _gameController;
             enemy = _enemy;
             healthBar = _healthBar;
+            projectilePrefab = _projectilePrefab;
+            //projectilePrefab.GetComponent<Renderer>().material.color = Color.black;
             enemy.ResetHealth();
             SetEnemyHealthBar();
         }
@@ -59,10 +61,23 @@ namespace Armiz
             transform.DOScale(new Vector3(1, 1, 1), 0.2f);
         }
 
+        public void FireProjectileTo(Vector3 targetPos)
+        {
+            GameObject projectileGO = ObjectPool.Spawn(projectilePrefab, transform.position);
+
+            // projectile animation
+            Tween thisTween = projectileGO.transform.DOMove(targetPos, 0.7f);
+            thisTween.OnComplete(() => {
+                ObjectPool.Despawn(projectileGO);
+                //gameController.EnemyHit();
+            });
+
+            // attack animation
+        }
+
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("HITTT!");
-            if (other.gameObject.tag == "Bullet") Hit();
+            if (other.gameObject.tag == "allyBullet") Hit();
         }
     }
 }

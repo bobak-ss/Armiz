@@ -33,7 +33,8 @@ namespace Armiz
         [Header("Prefabs")]
         public GameObject allyPrefab;
         public GameObject enemyPrefab;
-        public GameObject bulletPrefab;
+        public GameObject allyBulletPrefab;
+        public GameObject enemyBulletPrefab;
 
         [Header("Scriptable Objects")]
         public Fighter enemy;
@@ -90,6 +91,9 @@ namespace Armiz
                     {
                         StartCoroutine(state.AlliesAttack());
                     }
+
+                    //if (Input.GetKey(KeyCode.F))
+                    //    StartCoroutine(state.EnemiesAttack());
                     break;
                 default:
                     break;
@@ -162,7 +166,7 @@ namespace Armiz
                                                 enemyPos.y * allyPrefab.transform.localScale.y,
                                                 enemyPos.z + Utility.rSin(radius, i * segmentDegree));
                 allyControllers.Add(ObjectPool.Spawn(allyPrefab, newPos).GetComponent<AllyController>());
-                allyControllers[i].Initialize(this, ally, bulletPrefab);
+                allyControllers[i].Initialize(this, ally, allyBulletPrefab);
             }
         }
 
@@ -178,7 +182,7 @@ namespace Armiz
             GameObject enemyGO = ObjectPool.Spawn(enemyPrefab, enemyPos);
             enemyHealthBar = enemyGO.transform.GetChild(0).GetChild(1).GetComponent<Image>();
             enemyControllers.Add(enemyGO.GetComponent<EnemyController>());
-            enemyControllers[enemyControllers.Count - 1].Initialize(enemy, enemyHealthBar);
+            enemyControllers[enemyControllers.Count - 1].Initialize(enemy, enemyHealthBar, enemyBulletPrefab);
             enemyControllers[enemyControllers.Count - 1].SetEnemyHealthBar();
         }
 

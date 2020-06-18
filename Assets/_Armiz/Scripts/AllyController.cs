@@ -25,8 +25,19 @@ public class AllyController : MonoBehaviour
 
     void Update()
     {
-        
+
     }
+
+    public void Hit()
+    {
+        Debug.Log(gameObject.name + " Hited!");
+        //SetAllyHealthBar();
+
+        //Ally Hit Animation
+        transform.DOScale(0.6f, 0.1f);
+        transform.DOScale(new Vector3(1, 1, 1), 0.2f);
+    }
+
 
     public float FireProjectile()
     {
@@ -49,5 +60,10 @@ public class AllyController : MonoBehaviour
         });
 
         return ally.GetDamage();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "enemyBullet") Hit();
     }
 }

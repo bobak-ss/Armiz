@@ -788,7 +788,9 @@ MonoBehaviour:
     type: 3}
   enemyPrefab: {fileID: 4011719756047202256, guid: 5bb80be16fb6d6045ab8f4a34c601878,
     type: 3}
-  bulletPrefab: {fileID: 6352656697358523079, guid: f1778985adc418c4bab892ccd5def94e,
+  allyBulletPrefab: {fileID: 6352656697358523079, guid: f1778985adc418c4bab892ccd5def94e,
+    type: 3}
+  enemyBulletPrefab: {fileID: 6352656697358523079, guid: 11be33a83bccbe84e9809b1002501fcd,
     type: 3}
   enemy: {fileID: 11400000, guid: 9fc72ac531c417e40a9b036ed8bef59f, type: 2}
   ally: {fileID: 11400000, guid: 99395b72ef64103408ec72dbd101bca4, type: 2}
