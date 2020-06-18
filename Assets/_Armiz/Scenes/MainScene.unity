@@ -783,6 +783,7 @@ MonoBehaviour:
   addOneBtn: {fileID: 9073221}
   upgradeBtn: {fileID: 1011169641}
   enemyHealthBar: {fileID: 0}
+  coinCountTxt: {fileID: 1914434865}
   allyPrefab: {fileID: 879184497863737008, guid: 042945a6d7030814b9617a08d1c2419f,
     type: 3}
   enemyPrefab: {fileID: 4011719756047202256, guid: 5bb80be16fb6d6045ab8f4a34c601878,
