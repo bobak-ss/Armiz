@@ -47,7 +47,6 @@ public class AllyController : MonoBehaviour
         Tween thisTween = projectileGO.transform.DOMove(gameController.enemyPos, 0.7f);
         thisTween.OnComplete(() => {
             ObjectPool.Despawn(projectileGO);
-            //gameController.EnemyHit();
         });
 
         // attack animation

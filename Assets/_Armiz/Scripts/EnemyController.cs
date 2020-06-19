@@ -20,13 +20,12 @@ namespace Armiz
         private Renderer renderer;
         private GameObject projectilePrefab;
 
-        public void Initialize(Fighter _enemy, Image _healthBar, GameObject _projectilePrefab)
+        public void Initialize(Fighter _enemy, GameObject _projectilePrefab)
         {
-            //gameController = _gameController;
             enemy = _enemy;
-            healthBar = _healthBar;
             projectilePrefab = _projectilePrefab;
-            //projectilePrefab.GetComponent<Renderer>().material.color = Color.black;
+            healthBar = transform.GetChild(0).GetChild(1).GetComponent<Image>();
+
             enemy.ResetHealth();
             SetEnemyHealthBar();
         }
@@ -69,7 +68,6 @@ namespace Armiz
             Tween thisTween = projectileGO.transform.DOMove(targetPos, 0.7f);
             thisTween.OnComplete(() => {
                 ObjectPool.Despawn(projectileGO);
-                //gameController.EnemyHit();
             });
 
             // attack animation

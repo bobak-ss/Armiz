@@ -27,7 +27,6 @@ namespace Armiz
         public Image changeStateBtn;
         public Button addOneBtn;
         public Button upgradeBtn;
-        public Image enemyHealthBar;
         public Text coinCountTxt;
 
         [Header("Prefabs")]
@@ -180,9 +179,8 @@ namespace Armiz
             enemyControllers = new List<EnemyController>();
 
             GameObject enemyGO = ObjectPool.Spawn(enemyPrefab, enemyPos);
-            enemyHealthBar = enemyGO.transform.GetChild(0).GetChild(1).GetComponent<Image>();
             enemyControllers.Add(enemyGO.GetComponent<EnemyController>());
-            enemyControllers[enemyControllers.Count - 1].Initialize(enemy, enemyHealthBar, enemyBulletPrefab);
+            enemyControllers[enemyControllers.Count - 1].Initialize(enemy, enemyBulletPrefab);
             enemyControllers[enemyControllers.Count - 1].SetEnemyHealthBar();
         }
 
