@@ -181,7 +181,7 @@ namespace Armiz
             GameObject enemyGO = ObjectPool.Spawn(enemyPrefab, enemyPos);
             enemyControllers.Add(enemyGO.GetComponent<EnemyController>());
             enemyControllers[enemyControllers.Count - 1].Initialize(enemy, enemyBulletPrefab);
-            enemyControllers[enemyControllers.Count - 1].SetEnemyHealthBar();
+            enemyControllers[enemyControllers.Count - 1].SetHealthBar();
         }
 
         //public void ChangeUIState()

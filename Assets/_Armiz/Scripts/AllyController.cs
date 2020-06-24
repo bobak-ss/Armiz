@@ -3,6 +3,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AllyController : MonoBehaviour
 {
@@ -10,12 +11,17 @@ public class AllyController : MonoBehaviour
     private GameObject projectilePrefab;
     private Fighter ally;
     private Vector3 allyOrgPosition;
+    private Image healthBar;
 
     public void Initialize(GameController _gameController, Fighter _ally, GameObject _projectile)
     {
         gameController = _gameController;
         ally = _ally;
         projectilePrefab = _projectile;
+
+        healthBar = transform.GetChild(0).GetChild(1).GetComponent<Image>();
+        ally.ResetHealth();
+        SetHealthBar();
     }
 
     void Start()
@@ -28,10 +34,16 @@ public class AllyController : MonoBehaviour
 
     }
 
+    public void SetHealthBar()
+    {
+        if (healthBar == null) return;
+        healthBar.fillAmount = (ally.GetCurrentHealth() / ally.GetTotalHealth());
+    }
+
     public void Hit()
     {
         Debug.Log(gameObject.name + " Hited!");
-        //SetAllyHealthBar();
+        SetHealthBar();
 
         //Ally Hit Animation
         transform.DOScale(0.6f, 0.1f);

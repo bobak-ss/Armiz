@@ -27,7 +27,7 @@ namespace Armiz
             healthBar = transform.GetChild(0).GetChild(1).GetComponent<Image>();
 
             enemy.ResetHealth();
-            SetEnemyHealthBar();
+            SetHealthBar();
         }
 
         void Start()
@@ -43,7 +43,7 @@ namespace Armiz
             }
         }
 
-        public void SetEnemyHealthBar()
+        public void SetHealthBar()
         {
             if (healthBar == null) return;
             healthBar.fillAmount = (enemy.GetCurrentHealth() / enemy.GetTotalHealth());
@@ -51,7 +51,7 @@ namespace Armiz
 
         public void Hit()
         {
-            SetEnemyHealthBar();
+            SetHealthBar();
             colorAnimating = true;
             renderer.material.DOBlendableColor(enemyDamageolor, 0.1f).OnComplete(() => {
                 colorAnimating = false;
