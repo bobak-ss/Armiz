@@ -30,18 +30,15 @@ namespace Armiz
             gameController.coinCountTxt.text = GameData.Coin.ToString();
 
             Debug.Log("Allies Attack!");
-            gameController.shootTimer = new TimerTool(Time.time, gameController.shootTime);
             for (int i = 0; i < gameController.allyControllers.Count; i++)
             {
                 gameController.allyControllers[i].FireProjectile();
             }
 
-            // TODO: enemies get damage when actually hit by a projectile
             if (gameController.enemy.Damage(GameData.AllyCount * gameController.ally.GetDamage()))
             {
                 gameController.EnemyDied();
             }
-            //Debug.Log("Enemy Damaged! \nEnemy health:" + gameController.enemy.GetCurrentHealth());
             yield break;
         }
 
