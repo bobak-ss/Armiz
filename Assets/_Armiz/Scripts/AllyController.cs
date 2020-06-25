@@ -12,12 +12,16 @@ public class AllyController : MonoBehaviour
     private Fighter ally;
     private Vector3 allyOrgPosition;
     private Image healthBar;
+    private Vector3 initialPos;
+    private Vector3 initialScale;
 
     public void Initialize(GameController _gameController, Fighter _ally, GameObject _projectile)
     {
         gameController = _gameController;
         ally = _ally;
         projectilePrefab = _projectile;
+        initialPos = transform.position;
+        initialScale = transform.localScale;
 
         healthBar = transform.GetChild(0).GetChild(1).GetComponent<Image>();
         ally.ResetHealth();
@@ -46,8 +50,11 @@ public class AllyController : MonoBehaviour
         SetHealthBar();
 
         //Ally Hit Animation
-        transform.DOScale(0.6f, 0.1f);
-        transform.DOScale(new Vector3(1, 1, 1), 0.2f);
+        transform.DOScale(0.5f * initialScale.x, 0.2f).OnComplete(() =>
+        {
+            transform.DOScale(initialScale, 0.2f);
+        });
+        transform.position = initialPos;
     }
 
 
