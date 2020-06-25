@@ -774,15 +774,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83805e4d4f5aef4a8a4a6a6f4cf4f99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTime: 5
-  shootTime: 1
+  alliesAttackTime: 2
+  enemiesAttackTime: 4
   enemyPos: {x: 0, y: 1, z: 0}
   enemyControllers: []
   allyControllers: []
   changeStateBtn: {fileID: 1152193691}
   addOneBtn: {fileID: 9073221}
   upgradeBtn: {fileID: 1011169641}
-  enemyHealthBar: {fileID: 0}
   coinCountTxt: {fileID: 1914434865}
   allyPrefab: {fileID: 879184497863737008, guid: 042945a6d7030814b9617a08d1c2419f,
     type: 3}

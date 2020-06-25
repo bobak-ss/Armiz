@@ -14,8 +14,8 @@ namespace Armiz
         private GameState gameState;
 
         [Header("Game Prameters")]
-        public float attackTime;
-        public float shootTime;
+        public float alliesAttackTime;
+        public float enemiesAttackTime;
         public Vector3 enemyPos;
 
         [Header("ScriptRefrences")]
@@ -39,8 +39,8 @@ namespace Armiz
         public Fighter enemy;
         public Fighter ally;
 
-        [HideInInspector] public TimerTool attackTimer;
-        [HideInInspector] public TimerTool shootTimer;
+        [HideInInspector] public TimerTool alliesAttackTimer;
+        [HideInInspector] public TimerTool enemyAttackTimer;
 
         void Awake()
         {
@@ -80,9 +80,14 @@ namespace Armiz
                     //        StartCoroutine(state.AlliesAttack());
                     //    }
                     //}
-                    if (shootTimer.isFinished(Time.time))
+                    if (enemyAttackTimer.isFinished(Time.time))
                     {
-                        shootTimer = new TimerTool(Time.time, shootTime);
+                        enemyAttackTimer = new TimerTool(Time.time, enemiesAttackTime);
+                        StartCoroutine(state.EnemiesAttack());
+                    }
+                    if (alliesAttackTimer.isFinished(Time.time))
+                    {
+                        alliesAttackTimer = new TimerTool(Time.time, alliesAttackTime);
                         StartCoroutine(state.AlliesAttack());
                     }
 
@@ -104,14 +109,13 @@ namespace Armiz
             if (gameState == GameState.Idle)
             {
                 gameState = GameState.Attack;
-                attackTimer = new TimerTool(Time.time, attackTime);
                 SetState(new AttackState(this));
-                shootTimer = new TimerTool(Time.time, shootTime);
+                alliesAttackTimer = new TimerTool(Time.time, alliesAttackTime);
+                enemyAttackTimer = new TimerTool(Time.time, enemiesAttackTime);
                 StartCoroutine(state.AlliesAttack());
             }
             else if (gameState == GameState.Attack)
             {
-                if (gameState != GameState.Attack) return;
                 gameState = GameState.Idle;
                 SetState(new IdleState(this));
             }
