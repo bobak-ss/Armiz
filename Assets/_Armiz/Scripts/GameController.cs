@@ -122,7 +122,7 @@ namespace Armiz
         }
         public void OnAddAllyBtnClick()
         {
-            if (GameData.Coin < ally.GetCost()) return;
+            //if (GameData.Coin < ally.GetCost()) return;
 
             GameData.Coin -= ally.GetCost();
             GameData.AllyCount++;
@@ -131,6 +131,7 @@ namespace Armiz
         public void OnResetProgressBtnClick()
         {
             GameData.AllyCount = 1;
+            GameData.Coin = 0;
             SceneManager.LoadScene(0);
         }
 
