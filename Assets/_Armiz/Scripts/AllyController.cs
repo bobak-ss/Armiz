@@ -47,6 +47,12 @@ public class AllyController : MonoBehaviour
     public void Hit()
     {
         Debug.Log(gameObject.name + " Hited!");
+        if (ally.Damage(gameController.enemy.GetDamage()))
+        {
+            DespawnThisAlly();
+            return;
+        }
+
         SetHealthBar();
 
         //Ally Hit Animation
@@ -78,6 +84,12 @@ public class AllyController : MonoBehaviour
         });
 
         return ally.GetDamage();
+    }
+
+    private void DespawnThisAlly()
+    {
+        gameController.allyControllers.Remove(this);
+        ObjectPool.Despawn(this.gameObject);
     }
 
     private void OnTriggerEnter(Collider other)

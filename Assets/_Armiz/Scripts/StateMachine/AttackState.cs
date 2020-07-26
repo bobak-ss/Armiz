@@ -45,7 +45,8 @@ namespace Armiz
         public override IEnumerator EnemiesAttack()
         {
             Debug.Log("Enemies Attack!");
-            gameController.enemyControllers[0].FireProjectileTo(gameController.allyControllers[UnityEngine.Random.Range(0, gameController.allyControllers.Count - 1)].transform.position);
+            var targetedAllyToHit = gameController.allyControllers[UnityEngine.Random.Range(0, gameController.allyControllers.Count - 1)];
+            gameController.enemyControllers[0].FireProjectileTo(targetedAllyToHit.transform.position);
             yield break;
         }
     }

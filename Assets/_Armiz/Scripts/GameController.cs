@@ -149,10 +149,6 @@ namespace Armiz
             SpawnEnemies();
         }
 
-        public void EnemyHit()
-        {
-            enemyControllers[enemyControllers.Count - 1].Hit();
-        }
         private void SpawnNewAllies()
         {
             for (int i = 0; i < allyControllers.Count; i++)

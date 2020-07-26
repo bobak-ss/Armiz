@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8336845a3f8030343b9fb570f65c87f1, type: 3}
   m_Name: Enemy
   m_EditorClassIdentifier: 
-  _damage: 1
-  _currentHealth: 14
+  _damage: 10
+  _currentHealth: 12
   _totalHealth: 20
   _bounty: 10
+  _cost: 0
   _fighterType: 0
