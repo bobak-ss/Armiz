@@ -126,7 +126,11 @@ namespace Armiz
 
             GameData.Coin -= ally.GetCost();
             GameData.AllyCount++;
-            SpawnNewAllies();
+
+            allyControllers.Add(ObjectPool.Spawn(allyPrefab, Vector3.zero).GetComponent<AllyController>());
+            allyControllers[GameData.AllyCount - 1].Initialize(this, ally, allyBulletPrefab);
+
+            SetAlliesPositions(GameData.AllyCount);
         }
         public void OnResetProgressBtnClick()
         {
@@ -134,7 +138,6 @@ namespace Armiz
             GameData.Coin = 0;
             SceneManager.LoadScene(0);
         }
-
         public void OnAttackTimerFinished()
         {
             if (gameState != GameState.Attack) return;
@@ -145,27 +148,47 @@ namespace Armiz
         {
             Debug.Log("Enemy Died!");
             GameData.Coin += enemy.GetBountyValue();
+            enemy.LevelUp();
             // enemy coin get animation
             SpawnEnemies();
         }
 
-        private void SpawnNewAllies()
+        private void DespawnAllAllies()
         {
             for (int i = 0; i < allyControllers.Count; i++)
             {
                 ObjectPool.Despawn(allyControllers[i].gameObject);
             }
             allyControllers = new List<AllyController>();
+        }
+        private void SpawnNewAllies()
+        {
+            DespawnAllAllies();
 
             int allyCount = GameData.AllyCount;
+
+            if (allyCount <= 0)
+            {
+                GameData.AllyCount = 1;
+                allyCount = 1;
+            }
+
+            for (int i = 0; i < allyCount; i++)
+            {
+                allyControllers.Add(ObjectPool.Spawn(allyPrefab, Vector3.zero).GetComponent<AllyController>());
+            }
+
+            SetAlliesPositions(allyCount);
+        }
+        private void SetAlliesPositions(int allyCount)
+        {
             float segmentDegree = 360 / allyCount;
             int radius = (allyCount < 20) ? 2 : 5;
             for (int i = 0; i < allyCount; i++)
             {
-                Vector3 newPos = new Vector3(enemyPos.x + Utility.rCos(radius, i * segmentDegree),
-                                                enemyPos.y * allyPrefab.transform.localScale.y,
-                                                enemyPos.z + Utility.rSin(radius, i * segmentDegree));
-                allyControllers.Add(ObjectPool.Spawn(allyPrefab, newPos).GetComponent<AllyController>());
+                allyControllers[i].transform.position = new Vector3(enemyPos.x + Utility.rCos(radius, i * segmentDegree),
+                                                                    enemyPos.y * allyPrefab.transform.localScale.y,
+                                                                    enemyPos.z + Utility.rSin(radius, i * segmentDegree));
                 allyControllers[i].Initialize(this, ally, allyBulletPrefab);
             }
         }

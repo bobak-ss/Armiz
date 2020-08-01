@@ -56,9 +56,9 @@ public class AllyController : MonoBehaviour
         SetHealthBar();
 
         //Ally Hit Animation
-        transform.DOScale(0.5f * initialScale.x, 0.2f).OnComplete(() =>
+        transform.DOScale(0.5f * initialScale.x, 0.1f).OnComplete(() =>
         {
-            transform.DOScale(initialScale, 0.2f);
+            transform.DOScale(initialScale, 0.15f);
         });
         transform.position = initialPos;
     }
@@ -78,9 +78,8 @@ public class AllyController : MonoBehaviour
         Vector3 enemyAllyVector = (transform.position - gameController.enemyPos).normalized;
         enemyAllyVector = new Vector3(enemyAllyVector.x, 0, enemyAllyVector.z);
         enemyAllyVector *= 0.25f;
-        allyOrgPosition = transform.position;
-        transform.DOMove(allyOrgPosition + enemyAllyVector, 0.1f).OnComplete(() => {
-            transform.DOMove(allyOrgPosition, 0.15f);
+        transform.DOMove(initialPos + enemyAllyVector, 0.1f).OnComplete(() => {
+            transform.DOMove(initialPos, 0.15f);
         });
 
         return ally.GetDamage();
@@ -88,6 +87,7 @@ public class AllyController : MonoBehaviour
 
     private void DespawnThisAlly()
     {
+        GameData.AllyCount--;
         gameController.allyControllers.Remove(this);
         ObjectPool.Despawn(this.gameObject);
     }
