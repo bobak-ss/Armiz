@@ -1,7 +1,9 @@
 ﻿using Armiz;
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +12,8 @@ public class AllyController : MonoBehaviour
     private GameController gameController;
     private GameObject projectilePrefab;
     private Fighter ally;
-    private Vector3 allyOrgPosition;
     private Image healthBar;
+    private TextMeshPro healthTxt;
     private Vector3 initialPos;
     private Vector3 initialScale;
 
@@ -23,14 +25,16 @@ public class AllyController : MonoBehaviour
         initialPos = transform.position;
         initialScale = transform.localScale;
 
-        healthBar = transform.GetChild(0).GetChild(1).GetComponent<Image>();
+        healthBar = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>();
+        healthTxt = transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TextMeshPro>();
+
         ally.ResetHealth();
         SetHealthBar();
     }
 
     void Start()
     {
-        allyOrgPosition = transform.position;
+
     }
 
     void Update()
@@ -40,8 +44,10 @@ public class AllyController : MonoBehaviour
 
     public void SetHealthBar()
     {
-        if (healthBar == null) return;
+        if (healthBar == null || healthTxt == null) return;
         healthBar.fillAmount = (ally.GetCurrentHealth() / ally.GetTotalHealth());
+        healthTxt.text = string.Format("{0}", Math.Round(ally.GetCurrentHealth()));
+        //healthTxt.text = string.Format("{0}/{1}", Math.Round(ally.GetCurrentHealth(), 1) * 10, Math.Round(ally.GetTotalHealth(), 1) * 10);
     }
 
     public void Hit()

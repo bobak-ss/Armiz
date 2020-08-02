@@ -1,6 +1,8 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +16,7 @@ namespace Armiz
         //private GameController gameController;
         private Fighter enemy;
         private Image healthBar;
+        private TextMeshPro healthTxt;
 
         private bool colorAnimating = false;
 
@@ -24,7 +27,8 @@ namespace Armiz
         {
             enemy = _enemy;
             projectilePrefab = _projectilePrefab;
-            healthBar = transform.GetChild(0).GetChild(1).GetComponent<Image>();
+            healthBar = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>();
+            healthTxt = transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TextMeshPro>();
 
             enemy.ResetHealth();
             SetHealthBar();
@@ -45,8 +49,9 @@ namespace Armiz
 
         public void SetHealthBar()
         {
-            if (healthBar == null) return;
+            if (healthBar == null || healthTxt == null) return;
             healthBar.fillAmount = (enemy.GetCurrentHealth() / enemy.GetTotalHealth());
+            healthTxt.text = string.Format("{0}", Math.Round(enemy.GetCurrentHealth()));
         }
 
         public void Hit()
