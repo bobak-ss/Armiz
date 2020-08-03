@@ -30,9 +30,9 @@ namespace Armiz
             gameController.coinCountTxt.text = GameData.Coin.ToString();
 
             Debug.Log("Allies Attack!");
-            for (int i = 0; i < gameController.allyControllers.Count; i++)
+            for (int i = 0; i < gameController.allyFighterControllers.Count; i++)
             {
-                gameController.allyControllers[i].FireProjectile();
+                gameController.allyFighterControllers[i].FireProjectileTo(gameController.enemyPos);
             }
 
             if (gameController.enemy.Damage(GameData.AllyCount * gameController.ally.GetDamage()))
@@ -44,11 +44,11 @@ namespace Armiz
 
         public override IEnumerator EnemiesAttack()
         {
-            if (gameController.allyControllers.Count <= 0) yield break;
+            if (gameController.allyFighterControllers.Count <= 0) yield break;
 
             Debug.Log("Enemies Attack!");
-            var targetedAllyToHit = gameController.allyControllers[UnityEngine.Random.Range(0, gameController.allyControllers.Count - 1)];
-            gameController.enemyControllers[0].FireProjectileTo(targetedAllyToHit.transform.position);
+            var targetedAllyToHit = gameController.allyFighterControllers[UnityEngine.Random.Range(0, gameController.allyFighterControllers.Count - 1)];
+            gameController.enemyFighterControllers[0].FireProjectileTo(targetedAllyToHit.transform.position);
             yield break;
         }
     }

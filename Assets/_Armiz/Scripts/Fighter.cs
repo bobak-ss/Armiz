@@ -23,14 +23,13 @@ public class Fighter : ScriptableObject
         _currentHealth = _totalHealth;
     }
 
+    //TODO: parameter instead of method
     public float GetDamage() { return _damage; }
-
-    //TODO: parameter instead of method
     public float GetCurrentHealth() { return _currentHealth; }
-    //TODO: parameter instead of method
     public float GetTotalHealth() { return _totalHealth; }
     public int GetBountyValue() { return _bounty; }
     public int GetCost() { return _cost; }
+    public FighterType GetFighterType() { return _fighterType; }
 
     public void LevelUp()
     {

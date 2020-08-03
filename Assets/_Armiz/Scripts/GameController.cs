@@ -19,8 +19,10 @@ namespace Armiz
         public Vector3 enemyPos;
 
         [Header("ScriptRefrences")]
-        [SerializeField] public List<EnemyController> enemyControllers;
-        [SerializeField] public List<AllyController> allyControllers;
+        //[SerializeField] public List<EnemyController> enemyControllers;
+        //[SerializeField] public List<AllyController> allyControllers;
+        [SerializeField] public List<FighterController> allyFighterControllers;
+        [SerializeField] public List<FighterController> enemyFighterControllers;
 
         [Header("Editor Parameters")]
         //public GameObject uiPanel;
@@ -127,8 +129,8 @@ namespace Armiz
             GameData.Coin -= ally.GetCost();
             GameData.AllyCount++;
 
-            allyControllers.Add(ObjectPool.Spawn(allyPrefab, Vector3.zero).GetComponent<AllyController>());
-            allyControllers[GameData.AllyCount - 1].Initialize(this, ally, allyBulletPrefab);
+            allyFighterControllers.Add(ObjectPool.Spawn(allyPrefab, Vector3.zero).GetComponent<FighterController>());
+            allyFighterControllers[GameData.AllyCount - 1].Initialize(this, ally, allyBulletPrefab);
 
             SetAlliesPositions(GameData.AllyCount);
         }
@@ -155,11 +157,11 @@ namespace Armiz
 
         private void DespawnAllAllies()
         {
-            for (int i = 0; i < allyControllers.Count; i++)
+            for (int i = 0; i < allyFighterControllers.Count; i++)
             {
-                ObjectPool.Despawn(allyControllers[i].gameObject);
+                ObjectPool.Despawn(allyFighterControllers[i].gameObject);
             }
-            allyControllers = new List<AllyController>();
+            allyFighterControllers = new List<FighterController>();
         }
         private void SpawnNewAllies()
         {
@@ -175,7 +177,7 @@ namespace Armiz
 
             for (int i = 0; i < allyCount; i++)
             {
-                allyControllers.Add(ObjectPool.Spawn(allyPrefab, Vector3.zero).GetComponent<AllyController>());
+                allyFighterControllers.Add(ObjectPool.Spawn(allyPrefab, Vector3.zero).GetComponent<FighterController>());
             }
 
             SetAlliesPositions(allyCount);
@@ -186,26 +188,26 @@ namespace Armiz
             int radius = (allyCount < 20) ? 2 : 5;
             for (int i = 0; i < allyCount; i++)
             {
-                allyControllers[i].transform.position = new Vector3(enemyPos.x + Utility.rCos(radius, i * segmentDegree),
+                allyFighterControllers[i].transform.position = new Vector3(enemyPos.x + Utility.rCos(radius, i * segmentDegree),
                                                                     enemyPos.y * allyPrefab.transform.localScale.y,
                                                                     enemyPos.z + Utility.rSin(radius, i * segmentDegree));
-                allyControllers[i].Initialize(this, ally, allyBulletPrefab);
+                allyFighterControllers[i].Initialize(this, ally, allyBulletPrefab);
             }
         }
 
         public void SpawnEnemies()
         {
             //TODO: spawn multiple Enemies!
-            for (int i = 0; i < enemyControllers.Count; i++)
+            for (int i = 0; i < enemyFighterControllers.Count; i++)
             {
-                ObjectPool.Despawn(enemyControllers[i].gameObject);
+                ObjectPool.Despawn(enemyFighterControllers[i].gameObject);
             }
-            enemyControllers = new List<EnemyController>();
+            enemyFighterControllers = new List<FighterController>();
 
             GameObject enemyGO = ObjectPool.Spawn(enemyPrefab, enemyPos);
-            enemyControllers.Add(enemyGO.GetComponent<EnemyController>());
-            enemyControllers[enemyControllers.Count - 1].Initialize(enemy, enemyBulletPrefab);
-            enemyControllers[enemyControllers.Count - 1].SetHealthBar();
+            enemyFighterControllers.Add(enemyGO.GetComponent<FighterController>());
+            enemyFighterControllers[enemyFighterControllers.Count - 1].Initialize(this, enemy, enemyBulletPrefab);
+            enemyFighterControllers[enemyFighterControllers.Count - 1].SetHealthBar();
         }
 
         //public void ChangeUIState()
