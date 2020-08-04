@@ -124,7 +124,7 @@ namespace Armiz
         }
         public void OnAddAllyBtnClick()
         {
-            //if (GameData.Coin < ally.GetCost()) return;
+            if (GameData.Coin < ally.GetCost()) return;
 
             GameData.Coin -= ally.GetCost();
             GameData.AllyCount++;

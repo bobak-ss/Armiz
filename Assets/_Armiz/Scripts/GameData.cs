@@ -28,6 +28,6 @@ public class GameData
     private class DefaultValues
     {
         public const int AllyCountInitial = 1;
-        public const int CointCountInitial = 0;
+        public const int CointCountInitial = 500;
     }
 }

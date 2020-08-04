@@ -9,6 +9,7 @@ public class Fighter : ScriptableObject
     [SerializeField] private float _totalHealth;
     [SerializeField] private int _bounty;
     [SerializeField] private int _cost;
+    [SerializeField] private int _upgradeCost;
     [SerializeField] private int _level;
     [SerializeField] private FighterType _fighterType;
 
@@ -29,6 +30,7 @@ public class Fighter : ScriptableObject
     public float GetTotalHealth() { return _totalHealth; }
     public int GetBountyValue() { return _bounty; }
     public int GetCost() { return _cost; }
+    public int GetUpgradeCost() { return _upgradeCost; }
     public FighterType GetFighterType() { return _fighterType; }
 
     public void LevelUp()

@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Enemy
   m_EditorClassIdentifier: 
   _damage: 1.6
-  _currentHealth: 19
+  _currentHealth: 20
   _totalHealth: 20
   _bounty: 10
   _cost: 0
+  _upgradeCost: 0
   _level: 1
   _fighterType: 0

@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Ally
   m_EditorClassIdentifier: 
   _damage: 1
-  _currentHealth: 0
+  _currentHealth: 20
   _totalHealth: 20
   _bounty: 0
-  _cost: 0
+  _cost: 5
+  _upgradeCost: 5
   _level: 1
   _fighterType: 1
