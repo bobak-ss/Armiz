@@ -103,6 +103,13 @@ namespace Armiz
             }
         }
 
+        public int GetLevel() { return fighter.GetLevel(); }
+        public void LevelUp() 
+        { 
+            fighter.LevelUp();
+            SetHealthBar();
+        }
+
         private void DespawnThisFighter()
         {
             if (isAlly)

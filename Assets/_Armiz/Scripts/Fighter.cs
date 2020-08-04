@@ -47,7 +47,9 @@ public class Fighter : ScriptableObject
             default:
                 break;
         }
+        ResetHealth();
     }
+    public int GetLevel() { return _level; }
 
     public enum FighterType
     {

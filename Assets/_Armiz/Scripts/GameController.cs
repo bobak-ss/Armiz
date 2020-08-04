@@ -134,6 +134,32 @@ namespace Armiz
 
             SetAlliesPositions(GameData.AllyCount);
         }
+        public void OnLevelUpAllyBtnClick()
+        {
+            if (allyFighterControllers.Count <= 0) return;
+            if (GameData.Coin < ally.GetUpgradeCost()) return;
+
+            int minLevel = 10000;
+            for (int i = 0; i < allyFighterControllers.Count; i++)
+            {
+                if (allyFighterControllers[i].GetLevel() < minLevel)
+                {
+                    minLevel = allyFighterControllers[i].GetLevel();
+                }
+            }
+
+            List<FighterController> minLevelAllies = new List<FighterController>();
+            for (int i = 0; i < allyFighterControllers.Count; i++)
+            {
+                if (allyFighterControllers[i].GetLevel() == minLevel)
+                {
+                    minLevelAllies.Add(allyFighterControllers[i]);
+                }
+            }
+
+            var allyToLevelUp = minLevelAllies[UnityEngine.Random.Range(0, minLevelAllies.Count - 1)];
+            allyToLevelUp.LevelUp();
+        }
         public void OnResetProgressBtnClick()
         {
             GameData.AllyCount = 1;
