@@ -17,7 +17,7 @@ namespace Armiz
             gameController.changeStateBtn.color = Color.yellow;
             gameController.changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "ATTACK!";
             gameController.addOneBtn.interactable = (GameData.Coin > gameController.ally.GetCost());
-            gameController.upgradeBtn.interactable = true;
+            gameController.upgradeBtn.interactable = (GameData.Coin > gameController.ally.GetUpgradeCost());
             gameController.coinCountTxt.text = GameData.Coin.ToString();
             yield break;
         }

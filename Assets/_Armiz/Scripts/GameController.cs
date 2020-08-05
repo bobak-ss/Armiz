@@ -163,7 +163,9 @@ namespace Armiz
         public void OnResetProgressBtnClick()
         {
             GameData.AllyCount = 1;
-            GameData.Coin = 0;
+            GameData.Coin = 500;
+            enemy.ResetLevel();
+            ally.ResetLevel();
             SceneManager.LoadScene(0);
         }
         public void OnAttackTimerFinished()
@@ -176,7 +178,6 @@ namespace Armiz
         {
             Debug.Log("Enemy Died!");
             GameData.Coin += enemy.GetBountyValue();
-            enemy.LevelUp();
             // enemy coin get animation
             SpawnEnemies();
         }

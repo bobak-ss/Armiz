@@ -35,10 +35,10 @@ namespace Armiz
                 gameController.allyFighterControllers[i].FireProjectileTo(gameController.enemyPos);
             }
 
-            if (gameController.enemy.Damage(GameData.AllyCount * gameController.ally.GetDamage()))
-            {
-                gameController.EnemyDied();
-            }
+            //if (gameController.enemy.Damage(GameData.AllyCount * gameController.ally.GetDamage()))
+            //{
+            //    gameController.EnemyDied();
+            //}
             yield break;
         }
 

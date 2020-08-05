@@ -39,12 +39,12 @@ public class Fighter : ScriptableObject
         switch (_fighterType)
         {
             case FighterType.Enemy:
-                _damage = (float)(1f + 0.6f * Math.Pow(_level + 1, 1.5f));
-                _totalHealth = (float)(17f + 1f * Math.Pow(_level + 1, 1.9f));
+                _damage = (float)(1f + 0.6f * Math.Pow(_level, 1.5f));
+                _totalHealth = (float)(17f + 1f * Math.Pow(_level, 1.9f));
                 break;
             case FighterType.Ally:
-                _damage = (float)(1f + 0.8f * Math.Pow(_level + 1, 1.5f));
-                _totalHealth = (float)(8f + 0.6f * Math.Pow(_level + 1, 1.5f));
+                _damage = (float)(1f + 0.8f * Math.Pow(_level, 1.5f));
+                _totalHealth = (float)(8f + 0.6f * Math.Pow(_level, 1.5f));
                 break;
             default:
                 break;
@@ -52,6 +52,11 @@ public class Fighter : ScriptableObject
         ResetHealth();
     }
     public int GetLevel() { return _level; }
+    public void ResetLevel()
+    {
+        _level = 0;
+        LevelUp();
+    }
 
     public enum FighterType
     {

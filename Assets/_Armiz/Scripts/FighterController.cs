@@ -17,10 +17,12 @@ namespace Armiz
         private Image healthBar;
         private TextMeshPro healthTxt;
         private bool colorAnimating = false;
+        private bool transformAnimating = false;
         private GameObject projectilePrefab;
         private Vector3 initialPos;
         private Vector3 initialScale;
         private bool isAlly;
+        private bool isDead = false;
 
         public void Initialize(GameController _gameController, Fighter _fighter, GameObject _projectilePrefab)
         {
@@ -48,6 +50,18 @@ namespace Armiz
             {
                 renderer.material.color = fighterOrgColor;
             }
+            if (!transformAnimating)
+            {
+                transform.localScale = initialScale;
+                transform.position = initialPos;
+            }
+
+            if (isDead)
+            {
+                DespawnThisFighter();
+                isDead = false;
+            }
+             
         }
 
         public void SetHealthBar()
@@ -63,22 +77,21 @@ namespace Armiz
             SetHealthBar();
 
             colorAnimating = true;
-            transform.DOScale(0.5f * initialScale.x, 0.1f).OnComplete(() =>
+            transformAnimating = true;
+            transform.DOScale(0.8f * initialScale.x, 0.1f).OnComplete(() =>
             {
-                transform.DOScale(initialScale, 0.15f);
+                transform.DOScale(initialScale, 0.15f).OnComplete(() =>
+                {
+                    if (isAlly)
+                        isDead = fighter.Damage(gameController.enemy.GetDamage());
+                    else
+                        isDead = fighter.Damage(gameController.ally.GetDamage());
+                    transformAnimating = false;
+                });
             });
-            transform.position = initialPos;
             renderer.material.DOBlendableColor(fighterDamageolor, 0.1f).OnComplete(() => 
             {
                 colorAnimating = false;
-
-                bool dead = false;
-                if (isAlly)
-                    dead = fighter.Damage(gameController.enemy.GetDamage());
-                else
-                    dead = fighter.Damage(gameController.ally.GetDamage());
-                if (dead)
-                    DespawnThisFighter();
             });
         }
 
@@ -120,10 +133,12 @@ namespace Armiz
             }
             else
             {
-
+                fighter.LevelUp();
+                gameController.enemyFighterControllers.Remove(this);
+                ObjectPool.Despawn(this.gameObject);
+                gameController.EnemyDied();
             }
         }
-
         private void OnTriggerEnter(Collider other)
         {
             if (isAlly)
