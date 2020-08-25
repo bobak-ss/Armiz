@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 879184497863737021}
   - component: {fileID: 879184497863737022}
   - component: {fileID: 879184497863737023}
-  - component: {fileID: 1138854250365395939}
   - component: {fileID: 3513757010308362379}
   - component: {fileID: 6084798007036445292}
   m_Layer: 0
@@ -98,18 +97,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1138854250365395939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 879184497863737008}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a018ada01cb93c4daa403f8e8f0784a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &3513757010308362379
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -140,6 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fighterOrgColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
   fighterDamageolor: {r: 0.9743724, g: 1, b: 0, a: 1}
+  fighter: {fileID: 0}
 --- !u!1 &1496113381209046947
 GameObject:
   m_ObjectHideFlags: 0

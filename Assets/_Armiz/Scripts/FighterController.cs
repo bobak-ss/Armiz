@@ -10,10 +10,10 @@ namespace Armiz
     {
         public Color fighterOrgColor;
         public Color fighterDamageolor;
+        public Fighter fighter;
 
         private GameController gameController;
         private Renderer renderer;
-        private Fighter fighter;
         private Image healthBar;
         private TextMeshPro healthTxt;
         private bool colorAnimating = false;
@@ -24,18 +24,18 @@ namespace Armiz
         private bool isAlly;
         private bool isDead = false;
 
-        public void Initialize(GameController _gameController, Fighter _fighter, GameObject _projectilePrefab)
+        public void Initialize(GameController _gameController, Fighter _fighter, float _health, GameObject _projectilePrefab)
         {
             gameController = _gameController;
             fighter = _fighter;
             projectilePrefab = _projectilePrefab;
-            initialPos = transform.position;
+            //initialPos = transform.position;
             initialScale = transform.localScale;
             healthBar = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>();
             healthTxt = transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TextMeshPro>();
             isAlly = fighter.GetFighterType() == Fighter.FighterType.Ally;
 
-            fighter.ResetHealth();
+            fighter.SetHealth(_health);
             SetHealthBar();
         }
 
@@ -61,7 +61,12 @@ namespace Armiz
                 DespawnThisFighter();
                 isDead = false;
             }
-             
+        }
+
+        public void SetPosition(Vector3 _pos)
+        {
+            initialPos = _pos;
+            transform.position = _pos;
         }
 
         public void SetHealthBar()

@@ -23,6 +23,7 @@ namespace Armiz
         //[SerializeField] public List<AllyController> allyControllers;
         [SerializeField] public List<FighterController> allyFighterControllers;
         [SerializeField] public List<FighterController> enemyFighterControllers;
+        private SaveLoadManager saveLoadManager;
 
         [Header("Editor Parameters")]
         //public GameObject uiPanel;
@@ -44,8 +45,22 @@ namespace Armiz
         [HideInInspector] public TimerTool alliesAttackTimer;
         [HideInInspector] public TimerTool enemyAttackTimer;
 
+        private FightersSaveData fightersSaveData;
+
         void Awake()
         {
+            enemy = new Fighter();
+            enemy.ResetFighter(Fighter.FighterType.Enemy);
+            ally = new Fighter();
+            ally.ResetFighter(Fighter.FighterType.Ally);
+
+            saveLoadManager = new SaveLoadManager();
+            fightersSaveData = saveLoadManager.LoadSavedData();
+            if (fightersSaveData == null)
+            {
+                fightersSaveData = FightersSaveData.NullData();
+            }
+
             gameState = GameState.Idle;
             SetState(new IdleState(this));
             SpawnNewAllies();
@@ -106,6 +121,81 @@ namespace Armiz
             }
         }
 
+        private void SpawnNewAllies()
+        {
+            DespawnAllAllies();
+
+            int _allyCount = fightersSaveData.alliesHealth.Count;
+            GameData.AllyCount = _allyCount;
+
+            if (_allyCount <= 0)
+            {
+                GameData.AllyCount = 1;
+                _allyCount = 1;
+            }
+
+            float segmentDegree = 360 / _allyCount;
+            int radius = (_allyCount < 20) ? 2 : 5;
+            Vector3 pos = Vector3.zero;
+            for (int i = 0; i < _allyCount; i++)
+            {
+                allyFighterControllers.Add(ObjectPool.Spawn(allyPrefab, Vector3.zero).GetComponent<FighterController>());
+                allyFighterControllers[i].Initialize(this, ally, fightersSaveData.alliesHealth[i], allyBulletPrefab);
+            }
+
+            SetAlliesPositions(_allyCount);
+        }
+        private void SetAlliesPositions(int _allyCount)
+        {
+            float segmentDegree = 360 / _allyCount;
+            int radius = (_allyCount < 20) ? 2 : 5;
+            for (int i = 0; i < _allyCount; i++)
+            {
+                if (fightersSaveData.alliesPosition.Count > i)
+                {
+                    allyFighterControllers[i].SetPosition(new Vector3(fightersSaveData.alliesPosition[i].X, fightersSaveData.alliesPosition[i].Y, fightersSaveData.alliesPosition[i].Z));
+                }
+                else
+                {
+                    allyFighterControllers[i].SetPosition(new Vector3(enemyPos.x + Utility.rCos(radius, i * segmentDegree),
+                                                                        enemyPos.y * allyPrefab.transform.localScale.y,
+                                                                        enemyPos.z + Utility.rSin(radius, i * segmentDegree)));
+                }
+            }
+        }
+        private void DespawnAllAllies()
+        {
+            for (int i = 0; i < allyFighterControllers.Count; i++)
+            {
+                ObjectPool.Despawn(allyFighterControllers[i].gameObject);
+            }
+            allyFighterControllers = new List<FighterController>();
+        }
+
+        public void SpawnEnemies()
+        {
+            //TODO: spawn multiple Enemies!
+            for (int i = 0; i < enemyFighterControllers.Count; i++)
+            {
+                ObjectPool.Despawn(enemyFighterControllers[i].gameObject);
+            }
+            enemyFighterControllers = new List<FighterController>();
+
+            GameObject enemyGO = ObjectPool.Spawn(enemyPrefab, enemyPos);
+            enemyFighterControllers.Add(enemyGO.GetComponent<FighterController>());
+            enemyFighterControllers[enemyFighterControllers.Count - 1].Initialize(this, enemy, fightersSaveData.enemyHealth, enemyBulletPrefab);
+            enemyFighterControllers[enemyFighterControllers.Count - 1].SetHealthBar();
+            enemyFighterControllers[enemyFighterControllers.Count - 1].SetPosition(enemyPos);
+        }
+        public void EnemyDied()
+        {
+            Debug.Log("Enemy Died!");
+            GameData.Coin += enemy.GetBountyValue();
+            // enemy coin get animation
+            SpawnEnemies();
+        }
+
+        #region OnClicks
         public void OnStateChangeBtnClick()
         {
             if (gameState == GameState.Idle)
@@ -130,7 +220,7 @@ namespace Armiz
             GameData.AllyCount++;
 
             allyFighterControllers.Add(ObjectPool.Spawn(allyPrefab, Vector3.zero).GetComponent<FighterController>());
-            allyFighterControllers[GameData.AllyCount - 1].Initialize(this, ally, allyBulletPrefab);
+            allyFighterControllers[GameData.AllyCount - 1].Initialize(this, ally, ally.GetTotalHealth_Enemy(1), allyBulletPrefab);
 
             SetAlliesPositions(GameData.AllyCount);
         }
@@ -174,85 +264,26 @@ namespace Armiz
             gameState = GameState.Idle;
             SetState(new IdleState(this));
         }
-        public void EnemyDied()
+        #endregion
+
+        private void OnApplicationFocus(bool focus)
         {
-            Debug.Log("Enemy Died!");
-            GameData.Coin += enemy.GetBountyValue();
-            // enemy coin get animation
-            SpawnEnemies();
-        }
-
-        private void DespawnAllAllies()
-        {
-            for (int i = 0; i < allyFighterControllers.Count; i++)
+            if (!focus)
             {
-                ObjectPool.Despawn(allyFighterControllers[i].gameObject);
-            }
-            allyFighterControllers = new List<FighterController>();
-        }
-        private void SpawnNewAllies()
-        {
-            DespawnAllAllies();
-
-            int allyCount = GameData.AllyCount;
-
-            if (allyCount <= 0)
-            {
-                GameData.AllyCount = 1;
-                allyCount = 1;
-            }
-
-            for (int i = 0; i < allyCount; i++)
-            {
-                allyFighterControllers.Add(ObjectPool.Spawn(allyPrefab, Vector3.zero).GetComponent<FighterController>());
-            }
-
-            SetAlliesPositions(allyCount);
-        }
-        private void SetAlliesPositions(int allyCount)
-        {
-            float segmentDegree = 360 / allyCount;
-            int radius = (allyCount < 20) ? 2 : 5;
-            for (int i = 0; i < allyCount; i++)
-            {
-                allyFighterControllers[i].transform.position = new Vector3(enemyPos.x + Utility.rCos(radius, i * segmentDegree),
-                                                                    enemyPos.y * allyPrefab.transform.localScale.y,
-                                                                    enemyPos.z + Utility.rSin(radius, i * segmentDegree));
-                allyFighterControllers[i].Initialize(this, ally, allyBulletPrefab);
+                var data = new FightersSaveData();
+                data.enemyLevel = enemy.GetLevel();
+                data.enemyHealth = enemy.GetCurrentHealth();
+                data.alliesLevel = new List<float>();
+                data.alliesHealth = new List<float>();
+                data.alliesPosition = new List<aVector3>();
+                for (int i = 0; i < allyFighterControllers.Count; i++)
+                {
+                    data.alliesLevel.Add(allyFighterControllers[i].fighter.GetLevel());
+                    data.alliesHealth.Add(allyFighterControllers[i].fighter.GetCurrentHealth());
+                    data.alliesPosition.Add(new aVector3(allyFighterControllers[i].transform.position.x, allyFighterControllers[i].transform.position.y, allyFighterControllers[i].transform.position.z));
+                }
+                saveLoadManager.SaveThisData(data);
             }
         }
-
-        public void SpawnEnemies()
-        {
-            //TODO: spawn multiple Enemies!
-            for (int i = 0; i < enemyFighterControllers.Count; i++)
-            {
-                ObjectPool.Despawn(enemyFighterControllers[i].gameObject);
-            }
-            enemyFighterControllers = new List<FighterController>();
-
-            GameObject enemyGO = ObjectPool.Spawn(enemyPrefab, enemyPos);
-            enemyFighterControllers.Add(enemyGO.GetComponent<FighterController>());
-            enemyFighterControllers[enemyFighterControllers.Count - 1].Initialize(this, enemy, enemyBulletPrefab);
-            enemyFighterControllers[enemyFighterControllers.Count - 1].SetHealthBar();
-        }
-
-        //public void ChangeUIState()
-        //{
-        //    if (gameState == GameState.Idle)
-        //    {
-        //        changeStateBtn.color = Color.yellow;
-        //        changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "ATTACK!";
-        //        addOneBtn.interactable = true;
-        //        upgradeBtn.interactable = true;
-        //    }
-        //    else if (gameState == GameState.Attack)
-        //    {
-        //        changeStateBtn.color = Color.red;
-        //        changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "STOP!";
-        //        addOneBtn.interactable = false;
-        //        upgradeBtn.interactable = false;
-        //    }
-        //}
     }
 }
