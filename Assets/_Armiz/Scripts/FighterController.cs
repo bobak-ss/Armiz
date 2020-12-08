@@ -76,6 +76,8 @@ namespace Armiz
         private void OnEnemiesAttack()
         {
             if (isAlly) return;
+            if (gameController.allyFighterControllers.Count < 1) return;
+            
             var targetedAllyToHit = 
                 gameController.allyFighterControllers[UnityEngine.Random.Range(0, gameController.allyFighterControllers.Count - 1)];
             FireProjectileTo(targetedAllyToHit.transform.position);
