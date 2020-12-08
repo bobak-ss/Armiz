@@ -49,12 +49,10 @@ namespace Armiz
 
         void Awake()
         {
-            enemy = new Fighter();
             enemy.ResetFighter(Fighter.FighterType.Enemy);
-            ally = new Fighter();
             ally.ResetFighter(Fighter.FighterType.Ally);
 
-            saveLoadManager = new SaveLoadManager();
+            saveLoadManager = new SaveLoadManager("fightersData"); //TODO: this is not the way to set a fileName
             fightersSaveData = saveLoadManager.LoadSavedData();
             if (fightersSaveData == null)
             {
@@ -278,7 +276,6 @@ namespace Armiz
             upgradeBtn.interactable = (GameData.Coin > ally.GetUpgradeCost());
             coinCountTxt.text = GameData.Coin.ToString();
         }
-        
         private void OnAttackStateStart()
         {
             changeStateBtn.color = Color.red;
@@ -287,7 +284,6 @@ namespace Armiz
             upgradeBtn.interactable = false;
             coinCountTxt.text = GameData.Coin.ToString();
         }
-        
         private void OnAlliesAttack()
         {
             coinCountTxt.text = GameData.Coin.ToString();

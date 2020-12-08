@@ -5,9 +5,16 @@ using UnityEngine;
 
 namespace Armiz
 {
-    public class SaveLoadManager
+    public class SaveLoadManager //TODO: make this class reusable
     {
-        private string defaultSavePath = Application.persistentDataPath + "/Data.dat";
+        private string defaultSavePath;
+
+        public SaveLoadManager(string fileName)
+        {
+            defaultSavePath = $"{Application.persistentDataPath}/{fileName}.dat";
+            Debug.Log(defaultSavePath);
+        }
+        
         public void SaveThisData(FightersSaveData data)
         {
             try
