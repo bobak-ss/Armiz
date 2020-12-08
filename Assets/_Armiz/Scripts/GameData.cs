@@ -1,33 +1,50 @@
 using UnityEngine;
 
-public class GameData
+namespace Armiz
 {
-    public static int AllyCount
+    public class GameData
     {
-        get
+        public static bool FirstSession
         {
-            return PlayerPrefs.GetInt("AC", DefaultValues.AllyCountInitial);
+            get
+            {
+                if (PlayerPrefs.GetInt("FS", 1) == 0)
+                    return false;
+                else
+                    return true;
+            }
+            set
+            {
+                PlayerPrefs.SetInt("FS", (value) ? 1 : 0);
+            }
         }
-        set
+        public static int AllyCount
         {
-            PlayerPrefs.SetInt("AC", value);
+            get
+            {
+                return PlayerPrefs.GetInt("AC", DefaultValues.AllyCountInitial);
+            }
+            set
+            {
+                PlayerPrefs.SetInt("AC", value);
+            }
         }
-    }
-    public static int Coin
-    {
-        get
+        public static int Coin
         {
-            return PlayerPrefs.GetInt("coin", DefaultValues.CointCountInitial);
+            get
+            {
+                return PlayerPrefs.GetInt("coin", DefaultValues.CointCountInitial);
+            }
+            set
+            {
+                PlayerPrefs.SetInt("coin", value);
+            }
         }
-        set
-        {
-            PlayerPrefs.SetInt("coin", value);
-        }
-    }
 
-    private class DefaultValues
-    {
-        public const int AllyCountInitial = 1;
-        public const int CointCountInitial = 500;
+        private class DefaultValues
+        {
+            public const int AllyCountInitial = 1;
+            public const int CointCountInitial = 500;
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace Armiz
         //[SerializeField] public List<AllyController> allyControllers;
         [SerializeField] public List<FighterController> allyFighterControllers;
         [SerializeField] public List<FighterController> enemyFighterControllers;
+        [SerializeField] public UIController uiController;
         private SaveLoadManager saveLoadManager;
 
         [Header("Editor Parameters")]
@@ -53,10 +54,15 @@ namespace Armiz
             ally.ResetFighter(Fighter.FighterType.Ally);
 
             saveLoadManager = new SaveLoadManager("fightersData"); //TODO: this is not the way to set a fileName
-            fightersSaveData = saveLoadManager.LoadSavedData();
-            if (fightersSaveData == null)
+            if (GameData.FirstSession)
             {
                 fightersSaveData = FightersSaveData.NullData();
+                saveLoadManager.SaveThisData(fightersSaveData);
+                GameData.FirstSession = false;
+            }
+            else
+            {
+                fightersSaveData = saveLoadManager.LoadSavedData();
             }
 
             _gameStates = GameStates.Idle;
@@ -251,7 +257,8 @@ namespace Armiz
             GameData.Coin = 500;
             enemy.ResetLevel();
             ally.ResetLevel();
-            SaveGameCurrentState();
+            fightersSaveData = FightersSaveData.NullData();
+            saveLoadManager.SaveThisData(fightersSaveData);
             SceneManager.LoadScene(0);
         }
         public void OnAttackTimerFinished()
@@ -330,7 +337,7 @@ namespace Armiz
         private void OnGameLose()
         {
             Debug.Log("Game Over!");
-            OnResetProgressBtnClick();
+            uiController.ShowMessagePnl("Game Over!\nReset the game?", OnResetProgressBtnClick);
         }
     }
 }
