@@ -5,11 +5,9 @@ namespace Armiz
 {
 	public abstract class State
 	{
-		protected GameController gameController;
-
-		public State(GameController _gameController)
+		public State()
 		{
-			gameController = _gameController;
+			
 		}
 
 		public virtual IEnumerator Start()

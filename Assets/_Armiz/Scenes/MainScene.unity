@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -791,8 +791,8 @@ MonoBehaviour:
     type: 3}
   enemyBulletPrefab: {fileID: 6352656697358523079, guid: 11be33a83bccbe84e9809b1002501fcd,
     type: 3}
-  enemy: {fileID: 11400000, guid: 9fc72ac531c417e40a9b036ed8bef59f, type: 2}
-  ally: {fileID: 11400000, guid: 99395b72ef64103408ec72dbd101bca4, type: 2}
+  enemy: {fileID: 11400000, guid: ea43860e50b1544b0bde91112b2e1a71, type: 2}
+  ally: {fileID: 11400000, guid: cac58115cc1444010986839102e645d4, type: 2}
 --- !u!4 &922368551
 Transform:
   m_ObjectHideFlags: 0

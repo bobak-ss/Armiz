@@ -11,7 +11,7 @@ namespace Armiz
 {
     public class GameController : StateMachine
     {
-        private GameState gameState;
+        private GameStates _gameStates;
 
         [Header("Game Prameters")]
         public float alliesAttackTime;
@@ -61,10 +61,14 @@ namespace Armiz
                 fightersSaveData = FightersSaveData.NullData();
             }
 
-            gameState = GameState.Idle;
-            SetState(new IdleState(this));
+            _gameStates = GameStates.Idle;
+            SetState(new IdleState());
             SpawnNewAllies();
             SpawnEnemies();
+            
+            EventManager.SubscribeAlliesAttack(OnAlliesAttack);
+            EventManager.SubscribeAttackStateStart(OnAttackStateStart);
+            EventManager.SubscribeIdleStateStart(OnIdleStateStart);
         }
 
         void Start()
@@ -74,12 +78,12 @@ namespace Armiz
 
         void Update()
         {
-            switch (gameState)
+            switch (_gameStates)
             {
-                case GameState.Idle:
+                case GameStates.Idle:
                     // upgrade allies!
                     break;
-                case GameState.Attack:
+                case GameStates.Attack:
                     //if (attackTimer.isFinished(Time.time))
                     //{
                     //    OnAttackTimerFinished();
@@ -198,18 +202,18 @@ namespace Armiz
         #region OnClicks
         public void OnStateChangeBtnClick()
         {
-            if (gameState == GameState.Idle)
+            if (_gameStates == GameStates.Idle)
             {
-                gameState = GameState.Attack;
-                SetState(new AttackState(this));
+                _gameStates = GameStates.Attack;
+                SetState(new AttackState());
                 alliesAttackTimer = new TimerTool(Time.time, alliesAttackTime);
                 enemyAttackTimer = new TimerTool(Time.time, enemiesAttackTime);
                 StartCoroutine(state.AlliesAttack());
             }
-            else if (gameState == GameState.Attack)
+            else if (_gameStates == GameStates.Attack)
             {
-                gameState = GameState.Idle;
-                SetState(new IdleState(this));
+                _gameStates = GameStates.Idle;
+                SetState(new IdleState());
             }
         }
         public void OnAddAllyBtnClick()
@@ -260,12 +264,35 @@ namespace Armiz
         }
         public void OnAttackTimerFinished()
         {
-            if (gameState != GameState.Attack) return;
-            gameState = GameState.Idle;
-            SetState(new IdleState(this));
+            if (_gameStates != GameStates.Attack) return;
+            _gameStates = GameStates.Idle;
+            SetState(new IdleState());
         }
         #endregion
 
+        private void OnIdleStateStart()
+        {
+            changeStateBtn.color = Color.yellow;
+            changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "ATTACK!";
+            addOneBtn.interactable = (GameData.Coin > ally.GetCost());
+            upgradeBtn.interactable = (GameData.Coin > ally.GetUpgradeCost());
+            coinCountTxt.text = GameData.Coin.ToString();
+        }
+        
+        private void OnAttackStateStart()
+        {
+            changeStateBtn.color = Color.red;
+            changeStateBtn.transform.GetChild(0).GetComponent<Text>().text = "STOP!";
+            addOneBtn.interactable = false;
+            upgradeBtn.interactable = false;
+            coinCountTxt.text = GameData.Coin.ToString();
+        }
+        
+        private void OnAlliesAttack()
+        {
+            coinCountTxt.text = GameData.Coin.ToString();
+        }
+        
         private void OnApplicationFocus(bool focus)
         {
             if (!focus)

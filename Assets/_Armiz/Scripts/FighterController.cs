@@ -37,7 +37,11 @@ namespace Armiz
 
             fighter.SetHealth(_health);
             SetHealthBar();
+            
+            EventManager.SubscribeAlliesAttack(OnAlliesAttack);
+            EventManager.SubscribeEnemiesAttack(OnEnemiesAttack);
         }
+
 
         void Start()
         {
@@ -61,6 +65,20 @@ namespace Armiz
                 DespawnThisFighter();
                 isDead = false;
             }
+        }
+        
+        private void OnAlliesAttack()
+        {
+            if (!isAlly) return;
+            FireProjectileTo(gameController.enemyPos);
+        }
+
+        private void OnEnemiesAttack()
+        {
+            if (isAlly) return;
+            var targetedAllyToHit = 
+                gameController.allyFighterControllers[UnityEngine.Random.Range(0, gameController.allyFighterControllers.Count - 1)];
+            FireProjectileTo(targetedAllyToHit.transform.position);
         }
 
         public void SetPosition(Vector3 _pos)

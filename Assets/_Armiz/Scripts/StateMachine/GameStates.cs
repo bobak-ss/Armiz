@@ -1,6 +1,6 @@
 ﻿namespace Arimz
 {
-    public enum GameState
+    public enum GameStates
     {
         Idle,
         Attack
