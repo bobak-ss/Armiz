@@ -189,13 +189,6 @@ namespace Armiz
             enemyFighterControllers[enemyFighterControllers.Count - 1].SetHealthBar();
             enemyFighterControllers[enemyFighterControllers.Count - 1].SetPosition(enemyPos);
         }
-        public void EnemyDied()
-        {
-            Debug.Log("Enemy Died!");
-            GameData.Coin += enemy.GetBountyValue();
-            // enemy coin get animation
-            SpawnEnemies();
-        }
 
         #region OnClicks
         public void OnStateChangeBtnClick()
@@ -258,6 +251,7 @@ namespace Armiz
             GameData.Coin = 500;
             enemy.ResetLevel();
             ally.ResetLevel();
+            SaveGameCurrentState();
             SceneManager.LoadScene(0);
         }
         public void OnAttackTimerFinished()
@@ -293,20 +287,50 @@ namespace Armiz
         {
             if (!focus)
             {
-                var data = new FightersSaveData();
-                data.enemyLevel = enemy.GetLevel();
-                data.enemyHealth = enemy.GetCurrentHealth();
-                data.alliesLevel = new List<float>();
-                data.alliesHealth = new List<float>();
-                data.alliesPosition = new List<aVector3>();
-                for (int i = 0; i < allyFighterControllers.Count; i++)
-                {
-                    data.alliesLevel.Add(allyFighterControllers[i].fighter.GetLevel());
-                    data.alliesHealth.Add(allyFighterControllers[i].fighter.GetCurrentHealth());
-                    data.alliesPosition.Add(new aVector3(allyFighterControllers[i].transform.position.x, allyFighterControllers[i].transform.position.y, allyFighterControllers[i].transform.position.z));
-                }
-                saveLoadManager.SaveThisData(data);
+                SaveGameCurrentState();
             }
+        }
+
+        private void SaveGameCurrentState()
+        {
+            var data = new FightersSaveData();
+            data.enemyLevel = enemy.GetLevel();
+            data.enemyHealth = enemy.GetCurrentHealth();
+            data.alliesLevel = new List<float>();
+            data.alliesHealth = new List<float>();
+            data.alliesPosition = new List<aVector3>();
+            for (int i = 0; i < allyFighterControllers.Count; i++)
+            {
+                data.alliesLevel.Add(allyFighterControllers[i].fighter.GetLevel());
+                data.alliesHealth.Add(allyFighterControllers[i].fighter.GetCurrentHealth());
+                data.alliesPosition.Add(new aVector3(allyFighterControllers[i].transform.position.x, allyFighterControllers[i].transform.position.y, allyFighterControllers[i].transform.position.z));
+            }
+            saveLoadManager.SaveThisData(data);
+        }
+
+        public void OnAllyDeath(FighterController fighterController)
+        {
+            Debug.Log("Ally Died!");
+            allyFighterControllers.Remove(fighterController);
+            if (allyFighterControllers.Count <= 0)
+            {
+                OnGameLose();
+            }
+        }
+
+        public void OnEnemyDeath(FighterController fighterController)
+        {
+            Debug.Log("Enemy Died!");
+            enemyFighterControllers.Remove(fighterController);
+            GameData.Coin += enemy.GetBountyValue();
+            // enemy coin get animation
+            SpawnEnemies();
+        }
+
+        private void OnGameLose()
+        {
+            Debug.Log("Game Over!");
+            OnResetProgressBtnClick();
         }
     }
 }

@@ -62,7 +62,7 @@ namespace Armiz
 
             if (isDead)
             {
-                DespawnThisFighter();
+                OnFighterDeath();
                 isDead = false;
             }
         }
@@ -148,7 +148,7 @@ namespace Armiz
             SetHealthBar();
         }
 
-        private void DespawnThisFighter()
+        private void OnFighterDeath()
         {
             EventManager.UnsubscribeAlliesAttack(OnAlliesAttack);
             EventManager.UnsubscribeEnemiesAttack(OnEnemiesAttack);
@@ -156,29 +156,20 @@ namespace Armiz
             if (isAlly)
             {
                 GameData.AllyCount--;
-                gameController.allyFighterControllers.Remove(this);
+                gameController.OnAllyDeath(this);
                 ObjectPool.Despawn(this.gameObject);
             }
             else
             {
                 fighter.LevelUp();
-                gameController.enemyFighterControllers.Remove(this);
+                gameController.OnEnemyDeath(this);
                 ObjectPool.Despawn(this.gameObject);
-                gameController.EnemyDied();
             }
         }
         private void OnTriggerEnter(Collider other)
         {
-            if (isAlly)
-            {
-                if (other.gameObject.tag == "enemyBullet")
-                    Hit();
-            }
-            else
-            {
-                if (other.gameObject.tag == "allyBullet")
-                    Hit();
-            }
+            if (other.gameObject.CompareTag("enemyBullet") || other.gameObject.CompareTag("allyBullet"))
+                Hit();
         }
     }
 }
