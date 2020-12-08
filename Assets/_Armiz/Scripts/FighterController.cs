@@ -29,8 +29,8 @@ namespace Armiz
             gameController = _gameController;
             fighter = _fighter;
             projectilePrefab = _projectilePrefab;
-            //initialPos = transform.position;
             initialScale = transform.localScale;
+            renderer = gameObject.GetComponent<Renderer>();
             healthBar = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>();
             healthTxt = transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TextMeshPro>();
             isAlly = fighter.GetFighterType() == Fighter.FighterType.Ally;
@@ -40,12 +40,6 @@ namespace Armiz
             
             EventManager.SubscribeAlliesAttack(OnAlliesAttack);
             EventManager.SubscribeEnemiesAttack(OnEnemiesAttack);
-        }
-
-
-        void Start()
-        {
-            renderer = gameObject.GetComponent<Renderer>();
         }
 
         void Update()
@@ -93,7 +87,7 @@ namespace Armiz
         {
             if (healthBar == null || healthTxt == null) return;
             healthBar.fillAmount = (fighter.GetCurrentHealth() / fighter.GetTotalHealth());
-            healthTxt.text = string.Format("{0}", Math.Round(fighter.GetCurrentHealth()));
+            healthTxt.text = $"{Math.Round(fighter.GetCurrentHealth())}";
         }
 
         public void Hit()

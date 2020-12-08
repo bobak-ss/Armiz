@@ -24,7 +24,7 @@ namespace Armiz
 			data.alliesLevel.Add(1);
 
 			data.alliesHealth = new List<float>();
-			data.alliesHealth.Add(fighter.GetTotalHealth_Enemy(1));
+			data.alliesHealth.Add(fighter.GetTotalHealth_Ally(1));
 
 			data.alliesPosition = new List<aVector3>();
 

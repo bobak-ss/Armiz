@@ -221,7 +221,7 @@ namespace Armiz
             GameData.AllyCount++;
 
             allyFighterControllers.Add(ObjectPool.Spawn(allyPrefab, Vector3.zero).GetComponent<FighterController>());
-            allyFighterControllers[GameData.AllyCount - 1].Initialize(this, ally, ally.GetTotalHealth_Enemy(1), allyBulletPrefab);
+            allyFighterControllers[GameData.AllyCount - 1].Initialize(this, ally, ally.GetTotalHealth_Ally(1), allyBulletPrefab);
 
             SetAlliesPositions(GameData.AllyCount);
         }
