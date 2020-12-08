@@ -148,6 +148,9 @@ namespace Armiz
 
         private void DespawnThisFighter()
         {
+            EventManager.UnsubscribeAlliesAttack(OnAlliesAttack);
+            EventManager.UnsubscribeEnemiesAttack(OnEnemiesAttack);
+            
             if (isAlly)
             {
                 GameData.AllyCount--;
